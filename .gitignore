@@ -1,0 +1,9 @@
+*.eep
+*.elf
+*.d
+*.o
+*.srec
+*.map
+*.hex
+*.b#?
+*.s#?
