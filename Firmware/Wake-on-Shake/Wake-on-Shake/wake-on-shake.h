@@ -4,6 +4,7 @@
 uint8_t spiXfer(unsigned char);
 void ADXLCheck(void);
 void EEPROMRetrieve(void);
+void serialParse(void);
 
 #define X_THRESH		0
 #define Y_THRESH		2

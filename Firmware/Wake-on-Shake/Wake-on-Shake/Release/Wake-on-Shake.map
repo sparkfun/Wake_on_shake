@@ -1,7 +1,7 @@
 Archive member included because of file (symbol)
 
 c:/program files (x86)/atmel/atmel studio 6.0/extensions/atmel/avrgcc/3.4.0.65/avrtoolchain/bin/../lib/gcc/avr/4.6.2/avr25\libgcc.a(_mulhi3.o)
-                              interrupts.o (__mulhi3)
+                              serial.o (__mulhi3)
 c:/program files (x86)/atmel/atmel studio 6.0/extensions/atmel/avrgcc/3.4.0.65/avrtoolchain/bin/../lib/gcc/avr/4.6.2/avr25\libgcc.a(_udivmodhi4.o)
                               serial.o (__udivmodhi4)
 c:/program files (x86)/atmel/atmel studio 6.0/extensions/atmel/avrgcc/3.4.0.65/avrtoolchain/bin/../lib/gcc/avr/4.6.2/avr25\libgcc.a(_exit.o)
@@ -128,7 +128,7 @@ LOAD c:/program files (x86)/atmel/atmel studio 6.0/extensions/atmel/avrgcc/3.4.0
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000      0x4c2
+.text           0x00000000      0x5b0
  *(.vectors)
  .vectors       0x00000000       0x2a c:/program files (x86)/atmel/atmel studio 6.0/extensions/atmel/avrgcc/3.4.0.65/avrtoolchain/bin/../lib/gcc/avr/4.6.2/../../../../avr/lib/avr25/crttn2313a.o
                 0x00000000                __vector_default
@@ -206,40 +206,41 @@ LOAD c:/program files (x86)/atmel/atmel studio 6.0/extensions/atmel/avrgcc/3.4.0
                 0x0000007a                EEPROMWriteWord(unsigned char, unsigned int)
                 0x00000094                EEPROMReadByte(unsigned char)
                 0x000000b0                EEPROMReadWord(unsigned char)
- .text          0x000000d4      0x1ce interrupts.o
+ .text          0x000000d4       0x86 interrupts.o
                 0x000000d4                __vector_5
                 0x000000f2                __vector_1
                 0x0000011c                __vector_2
                 0x00000130                __vector_7
- .text          0x000002a2       0xac serial.o
-                0x000002a2                serialWriteChar(char)
-                0x000002ac                serialWrite(char const*)
-                0x000002ca                serialWriteInt(unsigned int)
- .text          0x0000034e       0x70 Wake-on-Shake.o
-                0x0000034e                spiXfer(unsigned char)
-                0x00000362                ADXLCheck()
-                0x00000378                EEPROMRetrieve()
- .text          0x000003be        0x0 c:/program files (x86)/atmel/atmel studio 6.0/extensions/atmel/avrgcc/3.4.0.65/avrtoolchain/bin/../lib/gcc/avr/4.6.2/avr25\libgcc.a(_mulhi3.o)
- .text          0x000003be        0x0 c:/program files (x86)/atmel/atmel studio 6.0/extensions/atmel/avrgcc/3.4.0.65/avrtoolchain/bin/../lib/gcc/avr/4.6.2/avr25\libgcc.a(_udivmodhi4.o)
- .text          0x000003be        0x0 c:/program files (x86)/atmel/atmel studio 6.0/extensions/atmel/avrgcc/3.4.0.65/avrtoolchain/bin/../lib/gcc/avr/4.6.2/avr25\libgcc.a(_exit.o)
- .text          0x000003be        0x0 c:/program files (x86)/atmel/atmel studio 6.0/extensions/atmel/avrgcc/3.4.0.65/avrtoolchain/bin/../lib/gcc/avr/4.6.2/avr25\libgcc.a(_copy_data.o)
- .text          0x000003be        0x0 c:/program files (x86)/atmel/atmel studio 6.0/extensions/atmel/avrgcc/3.4.0.65/avrtoolchain/bin/../lib/gcc/avr/4.6.2/avr25\libgcc.a(_clear_bss.o)
-                0x000003be                . = ALIGN (0x2)
- *(.text.*)
- .text.startup  0x000003be       0xb4 Wake-on-Shake.o
-                0x000003be                main
- .text.libgcc   0x00000472       0x24 c:/program files (x86)/atmel/atmel studio 6.0/extensions/atmel/avrgcc/3.4.0.65/avrtoolchain/bin/../lib/gcc/avr/4.6.2/avr25\libgcc.a(_mulhi3.o)
-                0x00000472                __mulhi3
- .text.libgcc   0x00000496       0x28 c:/program files (x86)/atmel/atmel studio 6.0/extensions/atmel/avrgcc/3.4.0.65/avrtoolchain/bin/../lib/gcc/avr/4.6.2/avr25\libgcc.a(_udivmodhi4.o)
-                0x00000496                __udivmodhi4
- .text.libgcc   0x000004be        0x0 c:/program files (x86)/atmel/atmel studio 6.0/extensions/atmel/avrgcc/3.4.0.65/avrtoolchain/bin/../lib/gcc/avr/4.6.2/avr25\libgcc.a(_exit.o)
- .text.libgcc   0x000004be        0x0 c:/program files (x86)/atmel/atmel studio 6.0/extensions/atmel/avrgcc/3.4.0.65/avrtoolchain/bin/../lib/gcc/avr/4.6.2/avr25\libgcc.a(_copy_data.o)
- .text.libgcc   0x000004be        0x0 c:/program files (x86)/atmel/atmel studio 6.0/extensions/atmel/avrgcc/3.4.0.65/avrtoolchain/bin/../lib/gcc/avr/4.6.2/avr25\libgcc.a(_clear_bss.o)
+ .text          0x0000015a       0xac serial.o
+                0x0000015a                serialWriteChar(char)
+                0x00000164                serialWrite(char const*)
+                0x00000182                serialWriteInt(unsigned int)
+ .text          0x00000206      0x2b8 Wake-on-Shake.o
+                0x00000206                spiXfer(unsigned char)
+                0x0000021a                ADXLCheck()
+                0x00000230                EEPROMRetrieve()
+                0x000002a6                serialParse()
+ .text          0x000004be        0x0 c:/program files (x86)/atmel/atmel studio 6.0/extensions/atmel/avrgcc/3.4.0.65/avrtoolchain/bin/../lib/gcc/avr/4.6.2/avr25\libgcc.a(_mulhi3.o)
+ .text          0x000004be        0x0 c:/program files (x86)/atmel/atmel studio 6.0/extensions/atmel/avrgcc/3.4.0.65/avrtoolchain/bin/../lib/gcc/avr/4.6.2/avr25\libgcc.a(_udivmodhi4.o)
+ .text          0x000004be        0x0 c:/program files (x86)/atmel/atmel studio 6.0/extensions/atmel/avrgcc/3.4.0.65/avrtoolchain/bin/../lib/gcc/avr/4.6.2/avr25\libgcc.a(_exit.o)
+ .text          0x000004be        0x0 c:/program files (x86)/atmel/atmel studio 6.0/extensions/atmel/avrgcc/3.4.0.65/avrtoolchain/bin/../lib/gcc/avr/4.6.2/avr25\libgcc.a(_copy_data.o)
+ .text          0x000004be        0x0 c:/program files (x86)/atmel/atmel studio 6.0/extensions/atmel/avrgcc/3.4.0.65/avrtoolchain/bin/../lib/gcc/avr/4.6.2/avr25\libgcc.a(_clear_bss.o)
                 0x000004be                . = ALIGN (0x2)
+ *(.text.*)
+ .text.startup  0x000004be       0xa2 Wake-on-Shake.o
+                0x000004be                main
+ .text.libgcc   0x00000560       0x24 c:/program files (x86)/atmel/atmel studio 6.0/extensions/atmel/avrgcc/3.4.0.65/avrtoolchain/bin/../lib/gcc/avr/4.6.2/avr25\libgcc.a(_mulhi3.o)
+                0x00000560                __mulhi3
+ .text.libgcc   0x00000584       0x28 c:/program files (x86)/atmel/atmel studio 6.0/extensions/atmel/avrgcc/3.4.0.65/avrtoolchain/bin/../lib/gcc/avr/4.6.2/avr25\libgcc.a(_udivmodhi4.o)
+                0x00000584                __udivmodhi4
+ .text.libgcc   0x000005ac        0x0 c:/program files (x86)/atmel/atmel studio 6.0/extensions/atmel/avrgcc/3.4.0.65/avrtoolchain/bin/../lib/gcc/avr/4.6.2/avr25\libgcc.a(_exit.o)
+ .text.libgcc   0x000005ac        0x0 c:/program files (x86)/atmel/atmel studio 6.0/extensions/atmel/avrgcc/3.4.0.65/avrtoolchain/bin/../lib/gcc/avr/4.6.2/avr25\libgcc.a(_copy_data.o)
+ .text.libgcc   0x000005ac        0x0 c:/program files (x86)/atmel/atmel studio 6.0/extensions/atmel/avrgcc/3.4.0.65/avrtoolchain/bin/../lib/gcc/avr/4.6.2/avr25\libgcc.a(_clear_bss.o)
+                0x000005ac                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x000004be        0x0 c:/program files (x86)/atmel/atmel studio 6.0/extensions/atmel/avrgcc/3.4.0.65/avrtoolchain/bin/../lib/gcc/avr/4.6.2/avr25\libgcc.a(_exit.o)
-                0x000004be                _exit
-                0x000004be                exit
+ .fini9         0x000005ac        0x0 c:/program files (x86)/atmel/atmel studio 6.0/extensions/atmel/avrgcc/3.4.0.65/avrtoolchain/bin/../lib/gcc/avr/4.6.2/avr25\libgcc.a(_exit.o)
+                0x000005ac                _exit
+                0x000005ac                exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -258,64 +259,65 @@ LOAD c:/program files (x86)/atmel/atmel studio 6.0/extensions/atmel/avrgcc/3.4.0
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x000004be        0x4 c:/program files (x86)/atmel/atmel studio 6.0/extensions/atmel/avrgcc/3.4.0.65/avrtoolchain/bin/../lib/gcc/avr/4.6.2/avr25\libgcc.a(_exit.o)
+ .fini0         0x000005ac        0x4 c:/program files (x86)/atmel/atmel studio 6.0/extensions/atmel/avrgcc/3.4.0.65/avrtoolchain/bin/../lib/gcc/avr/4.6.2/avr25\libgcc.a(_exit.o)
  *(.fini0)
-                0x000004c2                _etext = .
+                0x000005b0                _etext = .
 
-.data           0x00800060        0xc load address 0x000004c2
+.data           0x00800060        0xa load address 0x000005b0
                 0x00800060                PROVIDE (__data_start, .)
  *(.data)
  .data          0x00800060        0x0 c:/program files (x86)/atmel/atmel studio 6.0/extensions/atmel/avrgcc/3.4.0.65/avrtoolchain/bin/../lib/gcc/avr/4.6.2/../../../../avr/lib/avr25/crttn2313a.o
  .data          0x00800060        0x0 eeprom.o
  .data          0x00800060        0x0 interrupts.o
  .data          0x00800060        0x0 serial.o
- .data          0x00800060        0xc Wake-on-Shake.o
-                0x0080006b                mode
- .data          0x0080006c        0x0 c:/program files (x86)/atmel/atmel studio 6.0/extensions/atmel/avrgcc/3.4.0.65/avrtoolchain/bin/../lib/gcc/avr/4.6.2/avr25\libgcc.a(_mulhi3.o)
- .data          0x0080006c        0x0 c:/program files (x86)/atmel/atmel studio 6.0/extensions/atmel/avrgcc/3.4.0.65/avrtoolchain/bin/../lib/gcc/avr/4.6.2/avr25\libgcc.a(_udivmodhi4.o)
- .data          0x0080006c        0x0 c:/program files (x86)/atmel/atmel studio 6.0/extensions/atmel/avrgcc/3.4.0.65/avrtoolchain/bin/../lib/gcc/avr/4.6.2/avr25\libgcc.a(_exit.o)
- .data          0x0080006c        0x0 c:/program files (x86)/atmel/atmel studio 6.0/extensions/atmel/avrgcc/3.4.0.65/avrtoolchain/bin/../lib/gcc/avr/4.6.2/avr25\libgcc.a(_copy_data.o)
- .data          0x0080006c        0x0 c:/program files (x86)/atmel/atmel studio 6.0/extensions/atmel/avrgcc/3.4.0.65/avrtoolchain/bin/../lib/gcc/avr/4.6.2/avr25\libgcc.a(_clear_bss.o)
+ .data          0x00800060        0xa Wake-on-Shake.o
+                0x00800069                mode
+ .data          0x0080006a        0x0 c:/program files (x86)/atmel/atmel studio 6.0/extensions/atmel/avrgcc/3.4.0.65/avrtoolchain/bin/../lib/gcc/avr/4.6.2/avr25\libgcc.a(_mulhi3.o)
+ .data          0x0080006a        0x0 c:/program files (x86)/atmel/atmel studio 6.0/extensions/atmel/avrgcc/3.4.0.65/avrtoolchain/bin/../lib/gcc/avr/4.6.2/avr25\libgcc.a(_udivmodhi4.o)
+ .data          0x0080006a        0x0 c:/program files (x86)/atmel/atmel studio 6.0/extensions/atmel/avrgcc/3.4.0.65/avrtoolchain/bin/../lib/gcc/avr/4.6.2/avr25\libgcc.a(_exit.o)
+ .data          0x0080006a        0x0 c:/program files (x86)/atmel/atmel studio 6.0/extensions/atmel/avrgcc/3.4.0.65/avrtoolchain/bin/../lib/gcc/avr/4.6.2/avr25\libgcc.a(_copy_data.o)
+ .data          0x0080006a        0x0 c:/program files (x86)/atmel/atmel studio 6.0/extensions/atmel/avrgcc/3.4.0.65/avrtoolchain/bin/../lib/gcc/avr/4.6.2/avr25\libgcc.a(_clear_bss.o)
  *(.data*)
  *(.rodata)
  *(.rodata*)
  *(.gnu.linkonce.d*)
-                0x0080006c                . = ALIGN (0x2)
-                0x0080006c                _edata = .
-                0x0080006c                PROVIDE (__data_end, .)
+                0x0080006a                . = ALIGN (0x2)
+                0x0080006a                _edata = .
+                0x0080006a                PROVIDE (__data_end, .)
 
-.bss            0x0080006c        0xd
-                0x0080006c                PROVIDE (__bss_start, .)
+.bss            0x0080006a        0xe
+                0x0080006a                PROVIDE (__bss_start, .)
  *(.bss)
- .bss           0x0080006c        0x0 c:/program files (x86)/atmel/atmel studio 6.0/extensions/atmel/avrgcc/3.4.0.65/avrtoolchain/bin/../lib/gcc/avr/4.6.2/../../../../avr/lib/avr25/crttn2313a.o
- .bss           0x0080006c        0x0 eeprom.o
- .bss           0x0080006c        0x0 interrupts.o
- .bss           0x0080006c        0x0 serial.o
- .bss           0x0080006c        0xd Wake-on-Shake.o
-                0x0080006c                inputBufferValue
-                0x0080006e                sleepyTime
-                0x0080006f                timeAwake
-                0x00800071                z_threshold
-                0x00800073                y_threshold
-                0x00800075                x_threshold
-                0x00800077                t1Offset
- .bss           0x00800079        0x0 c:/program files (x86)/atmel/atmel studio 6.0/extensions/atmel/avrgcc/3.4.0.65/avrtoolchain/bin/../lib/gcc/avr/4.6.2/avr25\libgcc.a(_mulhi3.o)
- .bss           0x00800079        0x0 c:/program files (x86)/atmel/atmel studio 6.0/extensions/atmel/avrgcc/3.4.0.65/avrtoolchain/bin/../lib/gcc/avr/4.6.2/avr25\libgcc.a(_udivmodhi4.o)
- .bss           0x00800079        0x0 c:/program files (x86)/atmel/atmel studio 6.0/extensions/atmel/avrgcc/3.4.0.65/avrtoolchain/bin/../lib/gcc/avr/4.6.2/avr25\libgcc.a(_exit.o)
- .bss           0x00800079        0x0 c:/program files (x86)/atmel/atmel studio 6.0/extensions/atmel/avrgcc/3.4.0.65/avrtoolchain/bin/../lib/gcc/avr/4.6.2/avr25\libgcc.a(_copy_data.o)
- .bss           0x00800079        0x0 c:/program files (x86)/atmel/atmel studio 6.0/extensions/atmel/avrgcc/3.4.0.65/avrtoolchain/bin/../lib/gcc/avr/4.6.2/avr25\libgcc.a(_clear_bss.o)
+ .bss           0x0080006a        0x0 c:/program files (x86)/atmel/atmel studio 6.0/extensions/atmel/avrgcc/3.4.0.65/avrtoolchain/bin/../lib/gcc/avr/4.6.2/../../../../avr/lib/avr25/crttn2313a.o
+ .bss           0x0080006a        0x0 eeprom.o
+ .bss           0x0080006a        0x0 interrupts.o
+ .bss           0x0080006a        0x0 serial.o
+ .bss           0x0080006a        0xe Wake-on-Shake.o
+                0x0080006a                serialRxData
+                0x0080006b                inputBufferValue
+                0x0080006d                sleepyTime
+                0x0080006e                timeAwake
+                0x00800070                z_threshold
+                0x00800072                y_threshold
+                0x00800074                x_threshold
+                0x00800076                t1Offset
+ .bss           0x00800078        0x0 c:/program files (x86)/atmel/atmel studio 6.0/extensions/atmel/avrgcc/3.4.0.65/avrtoolchain/bin/../lib/gcc/avr/4.6.2/avr25\libgcc.a(_mulhi3.o)
+ .bss           0x00800078        0x0 c:/program files (x86)/atmel/atmel studio 6.0/extensions/atmel/avrgcc/3.4.0.65/avrtoolchain/bin/../lib/gcc/avr/4.6.2/avr25\libgcc.a(_udivmodhi4.o)
+ .bss           0x00800078        0x0 c:/program files (x86)/atmel/atmel studio 6.0/extensions/atmel/avrgcc/3.4.0.65/avrtoolchain/bin/../lib/gcc/avr/4.6.2/avr25\libgcc.a(_exit.o)
+ .bss           0x00800078        0x0 c:/program files (x86)/atmel/atmel studio 6.0/extensions/atmel/avrgcc/3.4.0.65/avrtoolchain/bin/../lib/gcc/avr/4.6.2/avr25\libgcc.a(_copy_data.o)
+ .bss           0x00800078        0x0 c:/program files (x86)/atmel/atmel studio 6.0/extensions/atmel/avrgcc/3.4.0.65/avrtoolchain/bin/../lib/gcc/avr/4.6.2/avr25\libgcc.a(_clear_bss.o)
  *(.bss*)
  *(COMMON)
-                0x00800079                PROVIDE (__bss_end, .)
-                0x000004c2                __data_load_start = LOADADDR (.data)
-                0x000004ce                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x00800078                PROVIDE (__bss_end, .)
+                0x000005b0                __data_load_start = LOADADDR (.data)
+                0x000005ba                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x00800079        0x0
-                0x00800079                PROVIDE (__noinit_start, .)
+.noinit         0x00800078        0x0
+                0x00800078                PROVIDE (__noinit_start, .)
  *(.noinit*)
-                0x00800079                PROVIDE (__noinit_end, .)
-                0x00800079                _end = .
-                0x00800079                PROVIDE (__heap_start, .)
+                0x00800078                PROVIDE (__noinit_end, .)
+                0x00800078                _end = .
+                0x00800078                PROVIDE (__heap_start, .)
 
 .eeprom         0x00810000        0x0
  *(.eeprom*)

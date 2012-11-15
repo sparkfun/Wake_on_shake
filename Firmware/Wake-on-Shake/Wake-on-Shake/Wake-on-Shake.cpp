@@ -21,6 +21,7 @@ volatile uint16_t	timeAwake = 0;
 volatile bool		sleepyTime = false;
 volatile uint8_t	mode = ' ';
 volatile uint16_t   inputBufferValue = 0;
+volatile uint8_t    serialRxData = 0;
 
 int main(void)
 {
@@ -120,13 +121,13 @@ int main(void)
 
 	inputBufferValue = 0;
 	mode = ' ';
-	set_sleep_mode(SLEEP_MODE_STANDBY);
+	set_sleep_mode(SLEEP_MODE_PWR_DOWN);
 	sei();
 	
 	// TCNT1- When this hits 65,536, an overflow interrupt occurs. By
 	//   "priming" it to 55,000, we reduce the time until an interrupt to
 	//   roughly 10 seconds.
-	TCNT1 = 60000;
+	TCNT1 = 55000;
 	t1Offset = 60000;
 	while(1)
 	{
@@ -135,12 +136,10 @@ int main(void)
 			serialWrite("z");
 			GIMSK = (1<<INT0);
 			sleep_mode();
-			serialWrite("p");
-			serialWriteInt(x_threshold);
-			timeAwake = 0;
-			sleepyTime = false;
-			TCNT1 = t1Offset;
+			EEPROMRetrieve();
+			TCNT1 = 55000;
 		}
+		if (serialRxData != 0) serialParse();
 	}
 }
 
@@ -173,10 +172,10 @@ unsigned char spiXfer(unsigned char data)
 
 void EEPROMRetrieve(void)
 {
-	/*x_threshold = EEPROMReadWord((uint8_t)X_THRESH);
+	x_threshold = EEPROMReadWord((uint8_t)X_THRESH);
 	y_threshold = EEPROMReadWord((uint8_t)Y_THRESH);
 	z_threshold = EEPROMReadWord((uint8_t)Z_THRESH);
-	t1Offset =    EEPROMReadWord((uint8_t)WAKE_OFFS);*/
+	t1Offset =    EEPROMReadWord((uint8_t)WAKE_OFFS);
 	serialWriteInt(x_threshold);
 	serialWrite(" ");
 	serialWriteInt(y_threshold);
@@ -186,4 +185,50 @@ void EEPROMRetrieve(void)
 	//if (t1Offset > 55000) t1Offset = 55000;
 	serialWriteInt(t1Offset);
 	serialWrite(" ");
+}
+
+void serialParse(void)
+{
+	serialWriteChar(serialRxData);
+	if (((serialRxData == '\n') | (serialRxData == '\r')) & (mode == ' ')) serialWriteChar('k');
+	else if (((serialRxData == '\n') | (serialRxData == '\r')) & (mode != ' '))
+	{
+		serialWriteInt(inputBufferValue);
+		serialWriteChar(mode);
+		switch(mode)
+		{
+			case 'x':
+			EEPROMWriteWord((uint8_t)X_THRESH, inputBufferValue);
+			x_threshold = inputBufferValue;
+			break;
+			case 'y':
+			EEPROMWriteWord((uint8_t)Y_THRESH, inputBufferValue);
+			y_threshold = inputBufferValue;
+			break;
+			case 'z':
+			EEPROMWriteWord((uint8_t)Z_THRESH, inputBufferValue);
+			z_threshold = inputBufferValue;
+			break;
+			case 'd':
+			t1Offset = 65535 - inputBufferValue;
+			EEPROMWriteWord((uint8_t)WAKE_OFFS, t1Offset);
+			break;
+		}
+		inputBufferValue = 0;
+		mode = ' ';
+	}
+	else if ((mode == ' ')&((serialRxData == 'x') | (serialRxData == 'y') | (serialRxData == 'z') | (serialRxData == 'd')))
+	{
+		mode = serialRxData;
+	}
+	else if ((mode == 'x') | (mode == 'y') | (mode == 'z') | (mode == 'd'))
+	{
+		if ((47<serialRxData) & (serialRxData<58))
+		{
+			inputBufferValue *= 10;
+			inputBufferValue += (serialRxData - 48);
+		}
+	}
+	else mode = ' ';
+	serialRxData = 0;
 }
