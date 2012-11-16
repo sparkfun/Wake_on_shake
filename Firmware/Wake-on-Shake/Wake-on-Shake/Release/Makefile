@@ -35,9 +35,11 @@ SUBDIRS :=
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS +=  \
+../ADXL362.cpp \
 ../eeprom.cpp \
 ../interrupts.cpp \
 ../serial.cpp \
+../spi.cpp \
 ../Wake-on-Shake.cpp
 
 
@@ -48,30 +50,38 @@ ASM_SRCS +=
 
 
 OBJS +=  \
+ADXL362.o \
 eeprom.o \
 interrupts.o \
 serial.o \
+spi.o \
 Wake-on-Shake.o
 
 
 OBJS_AS_ARGS +=  \
+ADXL362.o \
 eeprom.o \
 interrupts.o \
 serial.o \
+spi.o \
 Wake-on-Shake.o
 
 
 C_DEPS +=  \
+ADXL362.d \
 eeprom.d \
 interrupts.d \
 serial.d \
+spi.d \
 Wake-on-Shake.d
 
 
 C_DEPS_AS_ARGS +=  \
+ADXL362.d \
 eeprom.d \
 interrupts.d \
 serial.d \
+spi.d \
 Wake-on-Shake.d
 
 
@@ -84,6 +94,10 @@ ADDITIONAL_DEPENDENCIES:=
 OUTPUT_FILE_DEP:= ./makedep.mk
 
 # AVR32/GNU C Compiler
+
+
+
+
 
 
 

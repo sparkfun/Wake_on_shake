@@ -8,14 +8,16 @@ extern uint16_t				t1Offset;
 
 void EEPROMWriteWord(uint8_t addr, uint16_t data)
 {
-	EEPROMWriteByte(addr, (uint8_t)data>>8);
+	uint16_t dataTemp = data>>8;
+	EEPROMWriteByte(addr, (uint8_t)dataTemp);
 	EEPROMWriteByte(addr+1, (uint8_t)data);
 }
 
 uint16_t EEPROMReadWord(uint8_t addr)
 {
 	uint16_t readResult;
-	readResult = ((uint16_t)EEPROMReadByte(addr))<<8;
+	readResult = (uint16_t)EEPROMReadByte(addr);
+	readResult = readResult<<8;
 	readResult |= (uint16_t)EEPROMReadByte(addr+1);
 	return readResult;
 }

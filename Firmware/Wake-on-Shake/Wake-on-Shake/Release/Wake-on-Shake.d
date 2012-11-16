@@ -12,7 +12,8 @@ Wake-on-Shake.d Wake-on-Shake.o: .././Wake-on-Shake.cpp \
  c:\program\ files\ (x86)\atmel\atmel\ studio\ 6.0\extensions\atmel\avrgcc\3.4.0.65\avrtoolchain\bin\../lib/gcc/avr/4.6.2/../../../../avr/include/avr/lock.h \
  c:\program\ files\ (x86)\atmel\atmel\ studio\ 6.0\extensions\atmel\avrgcc\3.4.0.65\avrtoolchain\bin\../lib/gcc/avr/4.6.2/../../../../avr/include/avr/sleep.h \
  c:\program\ files\ (x86)\atmel\atmel\ studio\ 6.0\extensions\atmel\avrgcc\3.4.0.65\avrtoolchain\bin\../lib/gcc/avr/4.6.2/../../../../avr/include/avr/interrupt.h \
- .././serial.h .././eeprom.h .././wake-on-shake.h .././interrupts.h
+ .././serial.h .././eeprom.h .././wake-on-shake.h .././interrupts.h \
+ .././spi.h .././ADXL362.h .././xl362.h
 
 c:\program\ files\ (x86)\atmel\atmel\ studio\ 6.0\extensions\atmel\avrgcc\3.4.0.65\avrtoolchain\bin\../lib/gcc/avr/4.6.2/../../../../avr/include/avr/io.h:
 
@@ -47,3 +48,9 @@ c:\program\ files\ (x86)\atmel\atmel\ studio\ 6.0\extensions\atmel\avrgcc\3.4.0.
 .././wake-on-shake.h:
 
 .././interrupts.h:
+
+.././spi.h:
+
+.././ADXL362.h:
+
+.././xl362.h:

@@ -12,15 +12,13 @@
 #include "eeprom.h"
 #include "wake-on-shake.h"
 #include "interrupts.h"
+#include "spi.h"
+#include "ADXL362.h"
+#include "xl362.h"
 
 uint16_t			t1Offset;
-uint16_t			x_threshold;
-uint16_t			y_threshold;
-uint16_t			z_threshold;
-volatile uint16_t	timeAwake = 0;
+uint16_t			threshold;
 volatile bool		sleepyTime = false;
-volatile uint8_t	mode = ' ';
-volatile uint16_t   inputBufferValue = 0;
 volatile uint8_t    serialRxData = 0;
 
 int main(void)
@@ -54,9 +52,9 @@ int main(void)
 	PORTB = (1<<PB4) | (0<<PB3) | (0<<PB2) | (0<<PB1) | (0<<PB0);
 	// Port C doesn't exist
 	// Port D- PD5 and PD6 should be tied low; others are (for now) don't care.
-	//   Also, PD2 should be made high to enable pullup resistor for when no
+	//   Also, PD2/PD0 should be made high to enable pullup resistor for when no
 	//   serial connection is present.
-	PORTD = (1<<PD6) | (1<<PD5) | (1<<PD2);
+	PORTD = (1<<PD6) | (1<<PD5) | (1<<PD2) (1<<PD0);
 	
 	// Interrupt configuration is next. We'll need two interrupts: INT0 and INT1.
 	//   INT0 will wiggle when a serial connection occurs. INT1 will wiggle when
@@ -83,16 +81,6 @@ int main(void)
 	//   counter.
 	USISR = (1<<USIOIF);
 	
-	// We need to set up Timer1 as an overflow interrupt so the device can
-	//   stay awake long enough for the user to input some parameters.
-	//   Timer1 is a 16-bit counter; I'm going to set it up so that it ticks
-	//   over every 10 seconds when the device is awake, and when it ticks,
-	//   the device drops back into sleep.
-	// TCCR1B- 101 in CS1 bits divides the clock by 1024; one count per ms.
-	TCCR1B = (1<<CS12) | (0<<CS11) | (1<<CS10);
-	// TIMSK- Set TOIE1 to enable Timer1 overflow interrupt
-	TIMSK = (1<<TOIE1);
-	
 	// Set up the USART peripheral for writing in and out. This isn't used
 	//   during normal operation- only during user configuration. We'll
 	//   set the mode to 2400 baud, 8-N-1. Pretty standard, really.
@@ -113,122 +101,213 @@ int main(void)
 	//   are provisions in this register for synchronous mode, parity,
 	//   and stop-bit count, but we'll ignore them.
 	UCSRC = (1<<UCSZ1) | (1<<UCSZ0);
-	
-	serialWrite("poop");
-	EEPROMRetrieve();
-	// Now, we're going to retrieve the X, Y, and Z threshold values, along
-	//   with the time awake value, from EEPROM.
 
-	inputBufferValue = 0;
-	mode = ' ';
+	// set_sleep_mode() is a nice little macro from the sleep library which
+	//   sets the stage nicely for sleep; after this, all you need to do is
+	//   call sleep_mode() to put the processor to sleep. Power Down mode is
+	//   the lowest possible sleep power state; all clocks are stopped and
+	//   only an external interrupt can wake the processor.
 	set_sleep_mode(SLEEP_MODE_PWR_DOWN);
+	
+	// Check to make sure the EEPROM has been configured for first use by
+	//   looking at the "key" location. If not, configure it.
+	if (EEPROMReadByte((uint8_t)KEY_ADDR) != KEY) EEPROMConfig();
+	
+	// EEPROMRetrieve() pulls the various operational parameters out of
+	//   EEPROM and puts them in SRAM.
+	EEPROMRetrieve();
+	
+	// Configure the ADXL362 with the info we just pulled from EEPROM.
+	ADXLConfig();
+
+	// We need to set up Timer1 as an overflow interrupt so the device can
+	//   stay awake long enough for the user to input some parameters.
+	//   Timer1 is a 16-bit counter; I'm going to set it up so that it ticks
+	//   over every 10 seconds when the device is awake, and when it ticks,
+	//   the device drops back into sleep.
+	// TCCR1B- 101 in CS1 bits divides the clock by 1024; ~one count per ms.
+	TCCR1B = (1<<CS12) | (0<<CS11) | (1<<CS10);
+	// TCNT1- When this hits 65,536, an overflow interrupt occurs. By
+	//   "priming" it, we reduce the time until an interrupt occurs.
+	//   The if/else is to prevent the user accidentally
+	//   setting it so low that the part goes back to sleep before it can be
+	//   reprogrammed by the user through the command line.
+	TCNT1 = t1Offset;
+	// TIMSK- Set TOIE1 to enable Timer1 overflow interrupt
+	TIMSK = (1<<TOIE1);
+	
+	// loadOn() is a simple function that turns on the load. We'll turn it on
+	//   now and leave it on until sleep.
+	loadOn();
+		
+	// sei() is a macro that basically executes the single instruction
+	//   global interrupt enable function. Up until now, interrupt sources
+	//   are ignored. We will turn this on and leave it on, unless we need
+	//   to perform some sensitive tasks which require interrupts disabled
+	//   for a time.
 	sei();
 	
-	// TCNT1- When this hits 65,536, an overflow interrupt occurs. By
-	//   "priming" it to 55,000, we reduce the time until an interrupt to
-	//   roughly 10 seconds.
-	TCNT1 = 55000;
-	t1Offset = 60000;
+	// Okay, now we can move forward with our main application code. This loop
+	//   will just run over and over forever, waiting for signals from interrupts
+	//   to tell it what to do.
+	serialWrite("Ready!");
 	while(1)
 	{
+		// The main functionality is to go to sleep when there's been no activity
+		//   for some time; if Timer1 manages to overflow, it will set sleepyTime
+		//   true.
 		if (sleepyTime)
 		{
-			serialWrite("z");
-			GIMSK = (1<<INT0);
-			sleep_mode();
-			EEPROMRetrieve();
-			TCNT1 = 55000;
+			serialWrite("z");			// Let the user know sleep mode is coming.
+			ADXLConfig();
+			GIMSK = (1<<INT0) |(1<<INT1);// Enable external interrupts to wake the
+										//   processor up; INT0 is incoming serial
+										//   data, INT1 is accelerometer interrupt
+			loadOff();					// Turn off the load for sleepy time.
+			sleep_mode();				// Go to sleep until awoken by an interrupt.
+			EEPROMRetrieve();			// Retrieve EEPROM values, mostly to print
+										//   them out to the user, if the wake-up
+										//   was due to serial data arriving.
+			loadOn();					// Turn the load back on.
 		}
+		// Any data arriving over the serial port will trigger a serial receive
+		//   interrupt. If that data is non-null, serialParse() will be called to
+		//   deal with it.
 		if (serialRxData != 0) serialParse();
 	}
 }
 
-void ADXLCheck(void)
+// This should probably just be a macro instead of a function call. It raises pin
+//   4 of Port D, which activates the load.
+void loadOn(void)
 {
-	unsigned char temp = 0x0B;
-	PORTB &= 0b11101111;
-	spiXfer(temp);
-	temp = 0;
-	spiXfer(temp);
-	temp = spiXfer(temp);
-	PORTB |= (1<<PB4);
-	serialWriteInt((unsigned int)temp);
+	PORTD |= (1<<PD4);
 }
 
-// spiXfer() takes a byte and sends it out via the USI function. It does
-//   NOT handle the chip select; user must do that before calling spiXfer().
-//   It returns the value that was shifted in.
-
-unsigned char spiXfer(unsigned char data)
+// This should probably just be a macro instead of a function call. It drops pin
+//   4 of Port D, which deactivates the load.
+void loadOff(void)
 {
-	USIDR = data;
-	while ((USISR & (1<<USIOIF)) == 0)
-	{
-		USICR = (0<<USIWM1) | (1<<USIWM0) | (1<<USICS1) | (0<<USICS0) | (1<<USICLK) | (1<<USITC);
-	}
-	USISR = (1<<USIOIF);
-	return USIDR;
+	PORTD &= !(1<<PD4);
 }
 
+// Utility function which pulls the various operational paramters out of EEPROM,
+//   puts them into SRAM, and prints them over the serial line.
 void EEPROMRetrieve(void)
 {
-	x_threshold = EEPROMReadWord((uint8_t)X_THRESH);
-	y_threshold = EEPROMReadWord((uint8_t)Y_THRESH);
-	z_threshold = EEPROMReadWord((uint8_t)Z_THRESH);
-	t1Offset =    EEPROMReadWord((uint8_t)WAKE_OFFS);
-	serialWriteInt(x_threshold);
-	serialWrite(" ");
-	serialWriteInt(y_threshold);
-	serialWrite(" ");
-	serialWriteInt(z_threshold);
-	serialWrite(" ");
-	//if (t1Offset > 55000) t1Offset = 55000;
-	serialWriteInt(t1Offset);
-	serialWrite(" ");
+	threshold = EEPROMReadWord((uint8_t)THRESH);		// Activity threshold. See
+														//   ADXL362 datasheet for info.
+	t1Offset =  EEPROMReadWord((uint8_t)WAKE_OFFS);     // (65535 - t1Offset)ms elapse
+														//   between Timer1 interrupts.
+	serialWriteInt(threshold);							// Print threshold in human format.
+	if (t1Offset > 60000) t1Offset = 60000;				// Make sure Timer1 interrupts
+														//   don't happen too fast for
+														//   user to change values.
+	serialWriteInt(65535 - t1Offset);					// Print the delay before sleep
+														//   in human format.
 }
 
+// Configuration function for EEPROM- "erased" for the EEPROM is 65535, so we need to
+//   change these to more manageable values the first time the board powers up, or the
+//   sleep interrupt will happen WAY too fast and the motion threshold will be WAY too
+//   high for practicality.
+void EEPROMConfig(void)
+{
+	threshold = 150;		// Corresponds to ~150mg activity threshold
+	t1Offset  = 55000;		// Corresponds to ~10s delay before going to sleep
+	// Now let's store these, along with the "key" that let's us know we've done this.
+	EEPROMWriteWord((uint8_t)THRESH, (uint16_t)threshold);
+	EEPROMWriteWord((uint8_t)WAKE_OFFS, (uint16_t)t1Offset);
+	EEPROMWriteByte((uint8_t)KEY_ADDR, (uint8_t)KEY);
+}
+
+// Probably the most complex part of the code, serialParse() is a state machine
+//   which provides a limited user interface for setting and getting the parameters
+//   which dictate the operation of the Wake-on-shake. It gets called by the main
+//   code whenever a serial interrupt receives a non-null value over the serial
+//   port. It echoes back the received data (primarily for user convenience), then
+//   handles the data depending on current state and received data.
 void serialParse(void)
 {
-	serialWriteChar(serialRxData);
-	if (((serialRxData == '\n') | (serialRxData == '\r')) & (mode == ' ')) serialWriteChar('k');
-	else if (((serialRxData == '\n') | (serialRxData == '\r')) & (mode != ' '))
+	// Static variables- these need to persist between calls to this function.
+	static uint16_t		inputBufferValue = 0;
+	static uint8_t		mode = ' ';
+	static uint8_t		ADXL362DataBuffer = 0;  // Make a variable which will
+										//   be used to store the data the user
+										//   wants to write to the ADXL362 between
+										//   calls of this function.
+	uint8_t				localData = serialRxData;   // Make a local copy so we don't miss any
+										//   interrupts on the serial port, or end
+										//   up with data that gets changed halfway
+										//   through this function.
+	serialRxData = 0;					// Clear serialRxData
+	serialWriteChar(localData);			// Echo received data.
+	
+	// The state machine is implemented as an if/else group.
+	// First case: carriage returns/newlines when we're in the "no data" state.
+	//   Basically, we can just ignore these. This is important, because we don't
+	//   know for sure what the serial program the user is entering data from will
+	//   send at the end of the line, so we need to respond to either if they
+	//   happen at the end of data entry, and ignore them any other time, since
+	//   some programs may send BOTH CR and LF.
+	if (((localData == '\n') | (localData == '\r')) & (mode == ' '));
+	// CR/LF when we're in data reading mode: respond to whichever one happens first
+	//   by parsing the received data.
+	else if (((localData == '\n') | (localData == '\r')) & (mode != ' '))
 	{
-		serialWriteInt(inputBufferValue);
-		serialWriteChar(mode);
+		// Now, make a decision about what to do with the data depending on the mode.
 		switch(mode)
 		{
-			case 'x':
-			EEPROMWriteWord((uint8_t)X_THRESH, inputBufferValue);
-			x_threshold = inputBufferValue;
+			// 't' indicates that user wanted to change the threshold setting, so
+			//   let's store the inputBufferValue in EEPROM. 
+			case 't':
+			EEPROMWriteWord((uint8_t)THRESH, inputBufferValue);
+			threshold = inputBufferValue;
 			break;
-			case 'y':
-			EEPROMWriteWord((uint8_t)Y_THRESH, inputBufferValue);
-			y_threshold = inputBufferValue;
-			break;
-			case 'z':
-			EEPROMWriteWord((uint8_t)Z_THRESH, inputBufferValue);
-			z_threshold = inputBufferValue;
-			break;
+			// 'd' indicates that user wanted to change the delay before sleep, so
+			//   so we need to convert the user's value in milliseconds to an offset
+			//   value that can be loaded into TCNT1.
 			case 'd':
 			t1Offset = 65535 - inputBufferValue;
 			EEPROMWriteWord((uint8_t)WAKE_OFFS, t1Offset);
 			break;
+			// 'b' indicates that the user wishes to buffer a value to be written
+			//   to the ADXL362. It is up to the user to ensure that the value is
+			//   in the appropriate range (0-255).
+			case 'b':
+			ADXL362DataBuffer = (uint8_t)inputBufferValue;
+			break;			
+			// 'w' indicates that the user wants to write a value directly to the
+			//   ADXL362 part. In this case, inputBufferValue is taken as an
+			//   address to write to, and the data to be written is in the 
+			//   ADXL362DataBuffer variable.
+			case 'w':
+			ADXLWriteByte((uint8_t)inputBufferValue, ADXL362DataBuffer);
+			break;
+			case 'r':
+			serialWriteInt((uint16_t)ADXLReadByte((uint8_t)inputBufferValue));
+			break;
 		}
-		inputBufferValue = 0;
-		mode = ' ';
+		inputBufferValue = 0;		// Clear the input buffer for next data stream.
+		mode = ' ';					// Reset the mode for next data stream.
 	}
-	else if ((mode == ' ')&((serialRxData == 'x') | (serialRxData == 'y') | (serialRxData == 'z') | (serialRxData == 'd')))
+	// If the mode is currently null, and the character entered is a valid mode,
+	//   let's activate that mode.
+	else if ((mode == ' ')&((localData == 't')|(localData == 'd')|(localData == 'b')|(localData == 'w')|(localData == 'r')))
 	{
-		mode = serialRxData;
+		mode = localData;
 	}
-	else if ((mode == 'x') | (mode == 'y') | (mode == 'z') | (mode == 'd'))
+	// If we're in a valid mode, AND the character in question is numeric, adjust
+	//   the inputbuffer value accordingly.
+	else if ((mode == 't')|(mode == 'd')|(mode == 'w')|(mode == 'r')|(mode == 'b'))
 	{
-		if ((47<serialRxData) & (serialRxData<58))
+		// Numeric ASCII values are between 48 ('0') and 57 ('9'). We can easily
+		//   convert from an ASCII character to a binary value by subtracting 48.
+		if ((47<localData) & (localData<58))
 		{
 			inputBufferValue *= 10;
-			inputBufferValue += (serialRxData - 48);
+			inputBufferValue += (localData - 48);
 		}
 	}
-	else mode = ' ';
-	serialRxData = 0;
+	else mode = ' ';    // Otherwise, just ignore what's happening and go back to null mode.
 }

@@ -13,18 +13,20 @@ ISR(TIMER1_OVF_vect)
 
 ISR(INT0_vect)
 {
-	TCNT1 = 55000;
+	TCNT1 = t1Offset;
 	sleepyTime = false;
-	GIMSK = (0<<INT0);
+	GIMSK = (0<<INT0)|(0<<INT1);
 }
 
 ISR(INT1_vect)
 {
-	return;
+	TCNT1 = t1Offset;
+	sleepyTime = false;
+	GIMSK = (0<<INT0)|(0<<INT1); 
 }
 
 ISR(USART_RX_vect)
 {
-	TCNT1 = 55000;
+	TCNT1 = t1Offset;
 	serialRxData = UDR;
 }

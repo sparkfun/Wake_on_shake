@@ -2,13 +2,15 @@
 #define _wake_on_shake_h_included
 	  
 uint8_t spiXfer(unsigned char);
-void ADXLCheck(void);
 void EEPROMRetrieve(void);
 void serialParse(void);
+void loadOn(void);
+void loadOff(void);
+void EEPROMConfig(void);
 
-#define X_THRESH		0
-#define Y_THRESH		2
-#define Z_THRESH		4
-#define WAKE_OFFS		6
-	
+#define THRESH		0
+#define WAKE_OFFS	2
+#define KEY_ADDR	15
+#define KEY         0xAA
+
 #endif

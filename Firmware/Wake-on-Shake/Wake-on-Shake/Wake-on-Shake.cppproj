@@ -20,9 +20,10 @@
     <OverrideVtor>false</OverrideVtor>
     <OverrideVtorValue />
     <eraseonlaunchrule>0</eraseonlaunchrule>
-    <AsfVersion>3.1.3</AsfVersion>
+    <AsfVersion>2.9.0</AsfVersion>
     <avrtool>com.atmel.avrdbg.tool.ispmk2</avrtool>
-    <avrtoolinterface>ISP</avrtoolinterface>
+    <avrtoolinterface>
+    </avrtoolinterface>
     <com_atmel_avrdbg_tool_ispmk2>
       <ToolType>com.atmel.avrdbg.tool.ispmk2</ToolType>
       <ToolName>AVRISP mkII</ToolName>
@@ -33,15 +34,15 @@
       </OverrideVtorValue>
       <Channel>
         <host>127.0.0.1</host>
-        <port>56756</port>
+        <port>54551</port>
         <ssl>False</ssl>
       </Channel>
       <ToolOptions>
-        <InterfaceName>ISP</InterfaceName>
+        <InterfaceName>JTAG</InterfaceName>
         <InterfaceProperties>
           <JtagDbgClock>249000</JtagDbgClock>
           <JtagProgClock>1000000</JtagProgClock>
-          <IspClock>125000</IspClock>
+          <IspClock>150000</IspClock>
           <JtagInChain>false</JtagInChain>
           <JtagEnableExtResetOnStartSession>false</JtagEnableExtResetOnStartSession>
           <JtagDevicesBefore>0</JtagDevicesBefore>
@@ -61,7 +62,7 @@
       </OverrideVtorValue>
       <Channel>
         <host>127.0.0.1</host>
-        <port>1065</port>
+        <port>1083</port>
         <ssl>False</ssl>
       </Channel>
       <ToolOptions>
@@ -76,6 +77,7 @@
           <JtagDevicesAfter>0</JtagDevicesAfter>
           <JtagInstrBitsBefore>0</JtagInstrBitsBefore>
           <JtagInstrBitsAfter>0</JtagInstrBitsAfter>
+          <DebugWireClockDiv>125000</DebugWireClockDiv>
         </InterfaceProperties>
       </ToolOptions>
     </com_atmel_avrdbg_tool_jtagicemkii>
@@ -152,10 +154,16 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ADXL362.cpp">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="eeprom.cpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="eeprom.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="ADXL362.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="interrupts.cpp">
@@ -170,10 +178,19 @@
     <Compile Include="serial.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="spi.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="spi.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="Wake-on-Shake.cpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="wake-on-shake.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="xl362.h">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>

@@ -48,6 +48,8 @@ void serialWriteInt(unsigned int data)
 	serialWriteChar(huns);
 	serialWriteChar(tens);
 	serialWriteChar(ones);
+	serialWriteChar((char)'\n');
+	serialWriteChar((char)'\r');
 }
 
 
