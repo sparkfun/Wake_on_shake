@@ -5434,7 +5434,7 @@ Standard 8.5x11 US Letter frame</description>
 </device>
 </devices>
 </deviceset>
-<deviceset name="V_BATT">
+<deviceset name="V_BATT" prefix="SUPPLY">
 <description>&lt;b&gt;V_BATT&lt;/b&gt;&lt;br&gt;
 Generic symbol for the battery input to a system.</description>
 <gates>
@@ -5461,7 +5461,7 @@ Generic symbol for the battery input to a system.</description>
 </device>
 </devices>
 </deviceset>
-<deviceset name="3.3V" prefix="P+">
+<deviceset name="3.3V" prefix="SUPPLY">
 <description>&lt;b&gt;SUPPLY SYMBOL&lt;/b&gt;</description>
 <gates>
 <gate name="G$1" symbol="3.3V" x="0" y="0"/>
@@ -5474,7 +5474,7 @@ Generic symbol for the battery input to a system.</description>
 </device>
 </devices>
 </deviceset>
-<deviceset name="LOGO-SFE" prefix="JP">
+<deviceset name="LOGO-SFE" prefix="LOGO">
 <description>&lt;b&gt;Spark Fun Electronics PCB Logo&lt;/b&gt;
 This is the standard Spark Fun Electronics PCB logo.</description>
 <gates>
@@ -5513,7 +5513,7 @@ This is the standard Spark Fun Electronics PCB logo.</description>
 </device>
 </devices>
 </deviceset>
-<deviceset name="OSHW-LOGO">
+<deviceset name="OSHW-LOGO" prefix="LOGO">
 <description>&lt;b&gt;Open Source Hardware Logo&lt;/b&gt; This logo indicates the piece of hardware it is found on incorporates a OSHW license and/or adheres to the definition of open source hardware found here: http://freedomdefined.org/OSHW</description>
 <gates>
 <gate name="G$1" symbol="OSHW-LOGO" x="-5.08" y="-5.08"/>
@@ -6330,14 +6330,14 @@ will be further integrated into the Sparkfun Library for other footprints.  It c
 <wire x1="7.62" y1="1.27" x2="7.62" y2="-1.27" width="0.127" layer="21"/>
 <wire x1="7.62" y1="-1.27" x2="-7.62" y2="-1.27" width="0.127" layer="21"/>
 <wire x1="-7.62" y1="-1.27" x2="-7.62" y2="1.27" width="0.127" layer="21"/>
-<text x="-7.874" y="-1.524" size="1.27" layer="21" font="vector" ratio="15" rot="R90">GRN</text>
-<text x="9.144" y="-1.524" size="1.27" layer="21" font="vector" ratio="15" rot="R90">BLK</text>
+<text x="-7.874" y="-0.889" size="1.27" layer="21" font="vector" ratio="15" rot="R90">GRN</text>
+<text x="9.144" y="-0.889" size="1.27" layer="21" font="vector" ratio="15" rot="R90">BLK</text>
 <text x="-4.826" y="1.524" size="0.8128" layer="21" font="vector" ratio="15">TXO</text>
 <text x="-2.286" y="1.524" size="0.8128" layer="21" font="vector" ratio="15">RXI</text>
 <text x="0.254" y="1.524" size="0.8128" layer="21" font="vector" ratio="15">VCC</text>
-<text x="2.794" y="1.524" size="0.8128" layer="21" font="vector" ratio="15">DTR</text>
+<text x="-7.366" y="1.524" size="0.8128" layer="21" font="vector" ratio="15">DTR</text>
 <text x="5.334" y="1.524" size="0.8128" layer="21" font="vector" ratio="15">GND</text>
-<text x="-7.366" y="1.524" size="0.8128" layer="21" font="vector" ratio="15">CTS</text>
+<text x="2.794" y="1.524" size="0.8128" layer="21" font="vector" ratio="15">CTS</text>
 </package>
 <package name="1X05">
 <wire x1="6.985" y1="1.27" x2="8.255" y2="1.27" width="0.2032" layer="21"/>
@@ -6557,6 +6557,38 @@ will be further integrated into the Sparkfun Library for other footprints.  It c
 <text x="-3.27" y="1.27" size="0.4064" layer="25">&gt;NAME</text>
 <text x="1.54" y="1.27" size="0.4064" layer="27">&gt;VALUE</text>
 </package>
+<package name="1X03_SMD_RA_FEMALE">
+<wire x1="-3.935" y1="4.25" x2="-3.935" y2="-4.25" width="0.1778" layer="21"/>
+<wire x1="3.935" y1="4.25" x2="-3.935" y2="4.25" width="0.1778" layer="21"/>
+<wire x1="3.935" y1="-4.25" x2="3.935" y2="4.25" width="0.1778" layer="21"/>
+<wire x1="-3.935" y1="-4.25" x2="3.935" y2="-4.25" width="0.1778" layer="21"/>
+<rectangle x1="-0.32" y1="6.8" x2="0.32" y2="7.65" layer="51"/>
+<rectangle x1="2.22" y1="6.8" x2="2.86" y2="7.65" layer="51"/>
+<rectangle x1="-2.86" y1="6.8" x2="-2.22" y2="7.65" layer="51"/>
+<smd name="3" x="2.54" y="7.225" dx="1.25" dy="3" layer="1" rot="R180"/>
+<smd name="2" x="0" y="7.225" dx="1.25" dy="3" layer="1" rot="R180"/>
+<smd name="1" x="-2.54" y="7.225" dx="1.25" dy="3" layer="1" rot="R180"/>
+<text x="-3.155" y="2.775" size="1" layer="27">&gt;Value</text>
+<text x="-2.955" y="-3.395" size="1" layer="25">&gt;Name</text>
+</package>
+<package name="1X03_SMD_RA_MALE">
+<wire x1="3.81" y1="1.25" x2="-3.81" y2="1.25" width="0.1778" layer="51"/>
+<wire x1="-3.81" y1="1.25" x2="-3.81" y2="-1.25" width="0.1778" layer="51"/>
+<wire x1="3.81" y1="-1.25" x2="2.53" y2="-1.25" width="0.1778" layer="51"/>
+<wire x1="2.53" y1="-1.25" x2="-0.01" y2="-1.25" width="0.1778" layer="51"/>
+<wire x1="-0.01" y1="-1.25" x2="-2.55" y2="-1.25" width="0.1778" layer="51"/>
+<wire x1="-2.55" y1="-1.25" x2="-3.81" y2="-1.25" width="0.1778" layer="51"/>
+<wire x1="3.81" y1="-1.25" x2="3.81" y2="1.25" width="0.1778" layer="51"/>
+<wire x1="2.53" y1="-1.25" x2="2.53" y2="-7.25" width="0.127" layer="51"/>
+<wire x1="-0.01" y1="-1.25" x2="-0.01" y2="-7.25" width="0.127" layer="51"/>
+<wire x1="-2.55" y1="-1.25" x2="-2.55" y2="-7.25" width="0.127" layer="51"/>
+<rectangle x1="-0.32" y1="4.15" x2="0.32" y2="5.95" layer="51"/>
+<rectangle x1="-2.86" y1="4.15" x2="-2.22" y2="5.95" layer="51"/>
+<rectangle x1="2.22" y1="4.15" x2="2.86" y2="5.95" layer="51"/>
+<smd name="1" x="-2.54" y="5" dx="3" dy="1" layer="1" rot="R90"/>
+<smd name="2" x="0" y="5" dx="3" dy="1" layer="1" rot="R90"/>
+<smd name="3" x="2.54" y="5" dx="3" dy="1" layer="1" rot="R90"/>
+</package>
 </packages>
 <symbols>
 <symbol name="AVR_SPI_PROGRAMMER_6">
@@ -6606,12 +6638,12 @@ will be further integrated into the Sparkfun Library for other footprints.  It c
 <pin name="3" x="7.62" y="2.54" visible="pad" length="middle" direction="pas" swaplevel="1" rot="R180"/>
 </symbol>
 <symbol name="FTDI_DEVICE">
-<pin name="CTS" x="-5.08" y="5.08" length="middle"/>
-<pin name="TXO" x="-5.08" y="2.54" length="middle"/>
-<pin name="RXI" x="-5.08" y="0" length="middle"/>
-<pin name="VCC" x="-5.08" y="-2.54" length="middle"/>
-<pin name="DTR" x="-5.08" y="-5.08" length="middle"/>
-<pin name="GND" x="-5.08" y="-7.62" length="middle"/>
+<pin name="DTR" x="-5.08" y="5.08" visible="pin" length="middle"/>
+<pin name="TXO" x="-5.08" y="2.54" visible="pin" length="middle"/>
+<pin name="RXI" x="-5.08" y="0" visible="pin" length="middle"/>
+<pin name="VCC" x="-5.08" y="-2.54" visible="pin" length="middle"/>
+<pin name="CTS" x="-5.08" y="-5.08" visible="pin" length="middle"/>
+<pin name="GND" x="-5.08" y="-7.62" visible="pin" length="middle"/>
 <wire x1="0" y1="7.62" x2="0" y2="-10.16" width="0.254" layer="94"/>
 <wire x1="0" y1="-10.16" x2="7.62" y2="-10.16" width="0.254" layer="94"/>
 <wire x1="7.62" y1="-10.16" x2="7.62" y2="7.62" width="0.254" layer="94"/>
@@ -6740,7 +6772,9 @@ Standard 2-pin 0.1" header. Use with straight break away headers (SKU : PRT-0011
 <connect gate="G$1" pin="2" pad="1"/>
 </connects>
 <technologies>
-<technology name=""/>
+<technology name="">
+<attribute name="PROD_ID" value="CONN-08352"/>
+</technology>
 </technologies>
 </device>
 <device name="PTH2" package="1X02_BIG">
@@ -7055,6 +7089,29 @@ Standard 3-pin 0.1" header. Use with straight break away headers (SKU : PRT-0011
 <technology name=""/>
 </technologies>
 </device>
+<device name="SMD_RA_FEMALE" package="1X03_SMD_RA_FEMALE">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="2" pad="2"/>
+<connect gate="G$1" pin="3" pad="3"/>
+</connects>
+<technologies>
+<technology name="">
+<attribute name="PROD_ID" value="CONN-10926"/>
+<attribute name="VALUE" value="1x3 RA Female .1&quot;"/>
+</technology>
+</technologies>
+</device>
+<device name="SMD_RA_MALE" package="1X03_SMD_RA_MALE">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="2" pad="2"/>
+<connect gate="G$1" pin="3" pad="3"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
 </devices>
 </deviceset>
 <deviceset name="FTDI_DEVICE" prefix="JP">
@@ -7065,8 +7122,8 @@ Standard 3-pin 0.1" header. Use with straight break away headers (SKU : PRT-0011
 <devices>
 <device name="" package="FTDI_DEVICE_SIDE">
 <connects>
-<connect gate="G$1" pin="CTS" pad="P$1"/>
-<connect gate="G$1" pin="DTR" pad="P$5"/>
+<connect gate="G$1" pin="CTS" pad="P$5"/>
+<connect gate="G$1" pin="DTR" pad="P$1"/>
 <connect gate="G$1" pin="GND" pad="P$6"/>
 <connect gate="G$1" pin="RXI" pad="P$3"/>
 <connect gate="G$1" pin="TXO" pad="P$2"/>
@@ -7182,10 +7239,10 @@ We've spent an enormous amount of time creating and checking these footprints an
 <packages>
 <package name="SOP20W">
 <description>&lt;b&gt;SMALL OUTLINE PACKAGE&lt;/b&gt;</description>
-<wire x1="6.35" y1="3.175" x2="6.35" y2="-3.175" width="0.2032" layer="51"/>
-<wire x1="6.35" y1="-3.175" x2="-6.35" y2="-3.175" width="0.2032" layer="51"/>
-<wire x1="-6.35" y1="-3.175" x2="-6.35" y2="3.175" width="0.2032" layer="51"/>
-<wire x1="-6.35" y1="3.175" x2="6.35" y2="3.175" width="0.2032" layer="51"/>
+<wire x1="6.35" y1="3.175" x2="6.35" y2="-3.175" width="0.2032" layer="21"/>
+<wire x1="6.35" y1="-3.175" x2="-6.35" y2="-3.175" width="0.2032" layer="21"/>
+<wire x1="-6.35" y1="-3.175" x2="-6.35" y2="3.175" width="0.2032" layer="21"/>
+<wire x1="-6.35" y1="3.175" x2="6.35" y2="3.175" width="0.2032" layer="21"/>
 <smd name="1" x="-5.715" y="-5" dx="0.6" dy="2.2" layer="1"/>
 <smd name="2" x="-4.445" y="-5" dx="0.6" dy="2.2" layer="1"/>
 <smd name="3" x="-3.175" y="-5" dx="0.6" dy="2.2" layer="1"/>
@@ -7208,7 +7265,7 @@ We've spent an enormous amount of time creating and checking these footprints an
 <smd name="20" x="-5.715" y="5" dx="0.6" dy="2.2" layer="1"/>
 <text x="-5.715" y="0.635" size="1.27" layer="25">&gt;NAME</text>
 <text x="-5.715" y="-1.905" size="1.27" layer="27">&gt;VALUE</text>
-<text x="-5.08" y="-2.54" size="1.27" layer="21" rot="R90">1</text>
+<circle x="-5.08" y="-1.905" radius="0.635" width="0.127" layer="21"/>
 </package>
 </packages>
 <symbols>
@@ -8053,7 +8110,7 @@ We've spent an enormous amount of time creating and checking these footprints an
 </symbol>
 </symbols>
 <devicesets>
-<deviceset name="ADP160" prefix="U">
+<deviceset name="ADP160" prefix="U" uservalue="yes">
 <description>Nanopower LDO&lt;br&gt;
 Iq less than 1uA for low Iload</description>
 <gates>
@@ -8068,7 +8125,10 @@ Iq less than 1uA for low Iload</description>
 <connect gate="G$1" pin="VOUT" pad="5"/>
 </connects>
 <technologies>
-<technology name=""/>
+<technology name="">
+<attribute name="PROD_ID" value="VREG-11306"/>
+<attribute name="VALUE" value="ADP160" constant="no"/>
+</technology>
 </technologies>
 </device>
 </devices>
@@ -8151,12 +8211,16 @@ Iq less than 1uA for low Iload</description>
 <part name="JP5" library="SparkFun-Connectors" deviceset="M02" device="PTH"/>
 <part name="JP6" library="SparkFun-Aesthetics" deviceset="LOGO-SFE" device="NEW"/>
 <part name="JP7" library="SparkFun-Connectors" deviceset="M05" device="PTH"/>
+<part name="R4" library="SparkFun-Passives" deviceset="RESISTOR" device="0402-RES" value="10k">
+<attribute name="PROD_ID" value="RES-00824"/>
+</part>
+<part name="P+7" library="SparkFun-Aesthetics" deviceset="3.3V" device=""/>
 </parts>
 <sheets>
 <sheet>
 <plain>
 <text x="167.64" y="7.62" size="5.08" layer="94">Mike Hord</text>
-<text x="238.252" y="5.842" size="5.08" layer="94">02</text>
+<text x="238.252" y="5.842" size="5.08" layer="94">10</text>
 </plain>
 <instances>
 <instance part="Q1" gate="NMOS" x="86.36" y="63.5"/>
@@ -8229,6 +8293,10 @@ Iq less than 1uA for low Iload</description>
 <instance part="JP5" gate="G$1" x="30.48" y="68.58" rot="MR180"/>
 <instance part="JP6" gate="G$1" x="241.3" y="17.78"/>
 <instance part="JP7" gate="G$1" x="154.94" y="139.7" rot="R180"/>
+<instance part="R4" gate="G$1" x="55.88" y="40.64">
+<attribute name="PROD_ID" x="55.88" y="40.64" size="1.778" layer="96" display="off"/>
+</instance>
+<instance part="P+7" gate="G$1" x="48.26" y="43.18"/>
 </instances>
 <busses>
 </busses>
@@ -8450,6 +8518,12 @@ Iq less than 1uA for low Iload</description>
 <wire x1="73.66" y1="157.48" x2="76.2" y2="157.48" width="0.1524" layer="91"/>
 <pinref part="R3" gate="G$1" pin="1"/>
 </segment>
+<segment>
+<pinref part="P+7" gate="G$1" pin="3.3V"/>
+<wire x1="48.26" y1="43.18" x2="48.26" y2="40.64" width="0.1524" layer="91"/>
+<pinref part="R4" gate="G$1" pin="1"/>
+<wire x1="48.26" y1="40.64" x2="50.8" y2="40.64" width="0.1524" layer="91"/>
+</segment>
 </net>
 <net name="SCK" class="0">
 <segment>
@@ -8519,8 +8593,13 @@ Iq less than 1uA for low Iload</description>
 </segment>
 <segment>
 <pinref part="JP1" gate="G$1" pin="RXI"/>
-<wire x1="66.04" y1="33.02" x2="60.96" y2="33.02" width="0.1524" layer="91"/>
-<label x="60.96" y="33.02" size="1.27" layer="95" rot="R180" xref="yes"/>
+<wire x1="66.04" y1="33.02" x2="63.5" y2="33.02" width="0.1524" layer="91"/>
+<label x="50.8" y="33.02" size="1.27" layer="95" rot="R180" xref="yes"/>
+<pinref part="R4" gate="G$1" pin="2"/>
+<wire x1="63.5" y1="33.02" x2="50.8" y2="33.02" width="0.1524" layer="91"/>
+<wire x1="60.96" y1="40.64" x2="63.5" y2="40.64" width="0.1524" layer="91"/>
+<wire x1="63.5" y1="40.64" x2="63.5" y2="33.02" width="0.1524" layer="91"/>
+<junction x="63.5" y="33.02"/>
 </segment>
 </net>
 <net name="TXO" class="0">
@@ -8531,8 +8610,8 @@ Iq less than 1uA for low Iload</description>
 </segment>
 <segment>
 <pinref part="JP1" gate="G$1" pin="TXO"/>
-<wire x1="66.04" y1="35.56" x2="60.96" y2="35.56" width="0.1524" layer="91"/>
-<label x="60.96" y="35.56" size="1.27" layer="95" rot="R180" xref="yes"/>
+<wire x1="66.04" y1="35.56" x2="50.8" y2="35.56" width="0.1524" layer="91"/>
+<label x="50.8" y="35.56" size="1.27" layer="95" rot="R180" xref="yes"/>
 </segment>
 </net>
 <net name="N$3" class="0">
