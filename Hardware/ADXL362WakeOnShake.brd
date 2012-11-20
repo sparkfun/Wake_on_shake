@@ -34,6 +34,7 @@
 <layer number="42" name="bRestrict" color="1" fill="10" visible="no" active="yes"/>
 <layer number="44" name="Drills" color="7" fill="1" visible="no" active="yes"/>
 <layer number="45" name="Holes" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="46" name="Milling" color="3" fill="1" visible="no" active="yes"/>
 <layer number="51" name="tDocu" color="6" fill="1" visible="yes" active="yes"/>
 <layer number="3" name="Route3" color="4" fill="3" visible="no" active="no"/>
 <layer number="4" name="Route4" color="1" fill="4" visible="no" active="no"/>
@@ -54,7 +55,6 @@
 <layer number="37" name="tTest" color="7" fill="1" visible="no" active="no"/>
 <layer number="38" name="bTest" color="7" fill="1" visible="no" active="no"/>
 <layer number="43" name="vRestrict" color="2" fill="10" visible="no" active="no"/>
-<layer number="46" name="Milling" color="3" fill="1" visible="no" active="no"/>
 <layer number="47" name="Measures" color="7" fill="1" visible="no" active="no"/>
 <layer number="48" name="Document" color="7" fill="1" visible="no" active="no"/>
 <layer number="49" name="Reference" color="7" fill="1" visible="no" active="no"/>
@@ -123,16 +123,17 @@
 <wire x1="0" y1="24.13" x2="0" y2="0" width="0.1524" layer="20"/>
 <text x="41.91" y="2.54" size="1.778" layer="16" font="vector" ratio="15" rot="MR0">v02</text>
 <text x="34.163" y="13.081" size="1.778" layer="21" font="vector" ratio="15">WAKE</text>
-<text x="37.211" y="10.541" size="1.778" layer="21" font="vector" ratio="15">V+</text>
+<text x="34.036" y="10.541" size="1.778" layer="21" font="vector" ratio="15">VOUT</text>
 <text x="35.56" y="8.001" size="1.778" layer="21" font="vector" ratio="15">GND</text>
-<text x="0.762" y="21.463" size="1.27" layer="21" font="vector" ratio="15" rot="R270">GND</text>
-<text x="8.128" y="21.59" size="1.27" layer="21" font="vector" ratio="15" rot="R270">V+</text>
+<text x="1.016" y="22.225" size="1.27" layer="21" font="vector" ratio="15" rot="R270">GND</text>
+<text x="7.874" y="21.971" size="1.27" layer="21" font="vector" ratio="15" rot="R270">VIN</text>
 <text x="32.131" y="19.177" size="0.8128" layer="21" font="vector" ratio="15" rot="SR90">PB3</text>
 <text x="39.751" y="19.177" size="0.8128" layer="21" font="vector" ratio="15" rot="R90">PB0</text>
 <text x="42.291" y="19.177" size="0.8128" layer="21" font="vector" ratio="15" rot="R90">PD6</text>
 <text x="37.211" y="19.177" size="0.8128" layer="21" font="vector" ratio="15" rot="R90">PB1</text>
 <text x="34.671" y="19.177" size="0.8128" layer="21" font="vector" ratio="15" rot="R90">PB2</text>
 <text x="18.669" y="19.177" size="1.016" layer="21" font="vector" ratio="15">Wake-on-Shake</text>
+<text x="-46.99" y="21.59" size="1.778" layer="27" font="vector" ratio="15">M. Hord</text>
 </plain>
 <libraries>
 <library name="SparkFun-DiscreteSemi">
@@ -2075,19 +2076,6 @@ design rules under a new name.</description>
 <wire x1="33.57" y1="8.34" x2="33.02" y2="8.89" width="0.2032" layer="1"/>
 </signal>
 </signals>
-<errors>
-<approved hash="5,1,d17ac4312aaa1b1b"/>
-<approved hash="5,1,d7ebc4312aaa1d8a"/>
-<approved hash="5,1,e889c43d2aa222ec"/>
-<approved hash="5,1,ea18c43d2aa2207d"/>
-<approved hash="5,1,51fa08efa07a830a"/>
-<approved hash="5,1,e47680f6a869be86"/>
-<approved hash="5,1,def887efa47a8708"/>
-<approved hash="5,1,6b740ff6ac69ba84"/>
-<approved hash="5,1,d917f324f6a22072"/>
-<approved hash="5,1,e275f328f6aa1b14"/>
-<approved hash="5,1,e4e4f328f6aa1d85"/>
-</errors>
 </board>
 </drawing>
 </eagle>
