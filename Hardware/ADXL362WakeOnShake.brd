@@ -121,7 +121,7 @@
 <wire x1="43.18" y1="0" x2="43.18" y2="24.13" width="0.1524" layer="20"/>
 <wire x1="43.18" y1="24.13" x2="0" y2="24.13" width="0.1524" layer="20"/>
 <wire x1="0" y1="24.13" x2="0" y2="0" width="0.1524" layer="20"/>
-<text x="41.91" y="2.54" size="1.778" layer="16" font="vector" ratio="15" rot="MR0">v02</text>
+<text x="41.91" y="2.54" size="1.778" layer="16" font="vector" ratio="15" rot="MR0">v10</text>
 <text x="34.163" y="13.081" size="1.778" layer="21" font="vector" ratio="15">WAKE</text>
 <text x="34.036" y="10.541" size="1.778" layer="21" font="vector" ratio="15">VOUT</text>
 <text x="35.56" y="8.001" size="1.778" layer="21" font="vector" ratio="15">GND</text>
@@ -1599,7 +1599,10 @@ design rules under a new name.</description>
 <element name="Q1" library="SparkFun-DiscreteSemi" package="MSOP8" value="" x="15.24" y="17.78" rot="R270">
 <attribute name="PROD_ID" value="TRANS-07913" x="15.24" y="17.78" size="1.778" layer="27" rot="R270" display="off"/>
 </element>
-<element name="U1" library="SparkFun-Sensors" package="ADXL362" value="ADXL362" x="15.24" y="6.35"/>
+<element name="U1" library="SparkFun-Sensors" package="ADXL362" value="ADXL362" x="15.24" y="6.35">
+<attribute name="PROD_ID" value="IC-11297" x="15.24" y="6.35" size="1.778" layer="27" display="off"/>
+<attribute name="VALUE" value="ADXL362" x="15.24" y="6.35" size="1.778" layer="27" display="off"/>
+</element>
 <element name="FRAME1" library="SparkFun-Aesthetics" package="CREATIVE_COMMONS" value="FRAME-LETTER" x="-77.47" y="21.59"/>
 <element name="J1" library="SparkFun-Connectors" package="2X3" value="PROG_HDR" x="2.54" y="13.97"/>
 <element name="JP2" library="SparkFun-Connectors" package="JST-2-SMD" value="" x="3.81" y="7.62" rot="R90">

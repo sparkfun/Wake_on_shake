@@ -390,9 +390,10 @@ We've spent an enormous amount of time creating and checking these footprints an
 </symbol>
 </symbols>
 <devicesets>
-<deviceset name="ADXL362" prefix="U">
+<deviceset name="ADXL362" prefix="U" uservalue="yes">
 <description>Micropower 3-axis accelerometer&lt;BR&gt;
-2/4/8g digital output (SPI)</description>
+2/4/8g digital output (SPI)&lt;br&gt;
+IC-11297</description>
 <gates>
 <gate name="G$1" symbol="ADXL362" x="-7.62" y="-7.62"/>
 </gates>
@@ -410,7 +411,10 @@ We've spent an enormous amount of time creating and checking these footprints an
 <connect gate="G$1" pin="VS" pad="P$14"/>
 </connects>
 <technologies>
-<technology name=""/>
+<technology name="">
+<attribute name="PROD_ID" value="IC-11297"/>
+<attribute name="VALUE" value="ADXL362"/>
+</technology>
 </technologies>
 </device>
 </devices>
@@ -8148,7 +8152,7 @@ Iq less than 1uA for low Iload</description>
 <part name="Q1" library="SparkFun-DiscreteSemi" deviceset="IRF7509" device="">
 <attribute name="PROD_ID" value="TRANS-07913"/>
 </part>
-<part name="U1" library="SparkFun-Sensors" deviceset="ADXL362" device=""/>
+<part name="U1" library="SparkFun-Sensors" deviceset="ADXL362" device="" value="ADXL362"/>
 <part name="FRAME1" library="SparkFun-Aesthetics" deviceset="FRAME-LETTER" device=""/>
 <part name="U$1" library="SparkFun-Aesthetics" deviceset="V_BATT" device=""/>
 <part name="J1" library="SparkFun-Connectors" deviceset="AVR_SPI_PRG_6" device="PTH" value="PROG_HDR"/>
