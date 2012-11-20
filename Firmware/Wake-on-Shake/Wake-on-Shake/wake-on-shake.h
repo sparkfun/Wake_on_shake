@@ -13,4 +13,7 @@ void EEPROMConfig(void);
 #define KEY_ADDR	15
 #define KEY         0xAA
 
+#define loadOff() PORTD &= !(1<<PD4)
+#define loadOn()  PORTD |= (1<<PD4)
+
 #endif

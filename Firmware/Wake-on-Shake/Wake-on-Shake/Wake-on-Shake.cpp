@@ -16,6 +16,8 @@
 #include "ADXL362.h"
 #include "xl362.h"
 
+
+
 uint16_t			t1Offset;
 uint16_t			threshold;
 volatile bool		sleepyTime = false;
@@ -54,7 +56,7 @@ int main(void)
 	// Port D- PD5 and PD6 should be tied low; others are (for now) don't care.
 	//   Also, PD2/PD0 should be made high to enable pullup resistor for when no
 	//   serial connection is present.
-	PORTD = (1<<PD6) | (1<<PD5) | (1<<PD2) (1<<PD0);
+	PORTD = (1<<PD6) | (1<<PD5) | (1<<PD2) | (1<<PD0);
 	
 	// Interrupt configuration is next. We'll need two interrupts: INT0 and INT1.
 	//   INT0 will wiggle when a serial connection occurs. INT1 will wiggle when
@@ -177,20 +179,6 @@ int main(void)
 	}
 }
 
-// This should probably just be a macro instead of a function call. It raises pin
-//   4 of Port D, which activates the load.
-void loadOn(void)
-{
-	PORTD |= (1<<PD4);
-}
-
-// This should probably just be a macro instead of a function call. It drops pin
-//   4 of Port D, which deactivates the load.
-void loadOff(void)
-{
-	PORTD &= !(1<<PD4);
-}
-
 // Utility function which pulls the various operational paramters out of EEPROM,
 //   puts them into SRAM, and prints them over the serial line.
 void EEPROMRetrieve(void)
@@ -200,9 +188,6 @@ void EEPROMRetrieve(void)
 	t1Offset =  EEPROMReadWord((uint8_t)WAKE_OFFS);     // (65535 - t1Offset)ms elapse
 														//   between Timer1 interrupts.
 	serialWriteInt(threshold);							// Print threshold in human format.
-	if (t1Offset > 60000) t1Offset = 60000;				// Make sure Timer1 interrupts
-														//   don't happen too fast for
-														//   user to change values.
 	serialWriteInt(65535 - t1Offset);					// Print the delay before sleep
 														//   in human format.
 }
@@ -214,11 +199,10 @@ void EEPROMRetrieve(void)
 void EEPROMConfig(void)
 {
 	threshold = 150;		// Corresponds to ~150mg activity threshold
-	t1Offset  = 55000;		// Corresponds to ~10s delay before going to sleep
+	t1Offset  = 60000;		// Corresponds to ~10s delay before going to sleep
 	// Now let's store these, along with the "key" that let's us know we've done this.
 	EEPROMWriteWord((uint8_t)THRESH, (uint16_t)threshold);
 	EEPROMWriteWord((uint8_t)WAKE_OFFS, (uint16_t)t1Offset);
-	EEPROMWriteByte((uint8_t)KEY_ADDR, (uint8_t)KEY);
 }
 
 // Probably the most complex part of the code, serialParse() is a state machine
@@ -266,9 +250,12 @@ void serialParse(void)
 			break;
 			// 'd' indicates that user wanted to change the delay before sleep, so
 			//   so we need to convert the user's value in milliseconds to an offset
-			//   value that can be loaded into TCNT1.
+			//   value that can be loaded into TCNT1. We'll also include a check so
+			//   the user can't accidentally set the timeout period so short as to
+			//   render the device difficult to program.
 			case 'd':
 			t1Offset = 65535 - inputBufferValue;
+			if (t1Offset > 63000) t1Offset = 63000;
 			EEPROMWriteWord((uint8_t)WAKE_OFFS, t1Offset);
 			break;
 			// 'b' indicates that the user wishes to buffer a value to be written
