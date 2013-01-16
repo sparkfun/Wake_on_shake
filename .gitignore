@@ -4,6 +4,6 @@
 *.o
 *.srec
 *.map
-*.hex
 *.b#?
 *.s#?
+/Hardware/ProductionFiles
