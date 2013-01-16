@@ -26,6 +26,9 @@ void EEPROMConfig(void);	// Set the EEPROM storage locations up if they
 #define KEY_ADDR	127		// EEPROM address for the EEPROM configuration key.
 #define KEY         123		// EEPROM configuration key value.
 
+#define FALSE		0
+#define TRUE		1
+
 // Macros for turning the load on and off.
 #define loadOff() PORTD &= !(1<<PD4)
 #define loadOn()  PORTD |= (1<<PD4)

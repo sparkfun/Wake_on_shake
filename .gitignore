@@ -1,5 +1,9 @@
 *.eep
 *.elf
+*.lst
+*.csv
+*.lss
+*.sym
 *.d
 *.o
 *.srec

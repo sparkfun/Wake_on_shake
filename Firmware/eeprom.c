@@ -1,4 +1,4 @@
-﻿/******************************************************************************
+/******************************************************************************
 Created 26 Nov 2012 by Mike Hord at SparkFun Electronics.
 Wake-on-Shake hardware and firmware are released under the Creative Commons 
 Share Alike v3.0 license:

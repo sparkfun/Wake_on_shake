@@ -22,10 +22,9 @@ available, but most users will not need them.
 #include <avr/io.h>
 #include <avr/sleep.h>
 #include <avr/interrupt.h>
+#include "wake-on-shake.h"
 #include "serial.h"
 #include "eeprom.h"
-#include "wake-on-shake.h"
-#include "interrupts.h"
 #include "spi.h"
 #include "ADXL362.h"
 #include "xl362.h"
@@ -34,7 +33,7 @@ available, but most users will not need them.
 uint16_t			t1Offset;			// This value, when written to TCNT1, 
 										//   is the offset to the delay before
 										//   sleep. It is 65535 - (delay)ms.
-volatile bool		sleepyTime = false; // Flag used to communicate from the
+volatile uint8_t	sleepyTime = FALSE; // Flag used to communicate from the
 										//   ISR to the main program to send
 										//   the device into sleep mode.
 volatile uint8_t    serialRxData = 0;	// Data passing variable to get data
@@ -110,7 +109,7 @@ int main(void)
 	// For 2400 baud, at 1.000MHz (which is our clock speed, since we're
 	//   using the internal oscillator clocked down), UBRR should be set to
 	//   25, and the U2X bit of UCSRA should be set to '0'.
-	UBRRH = 0;
+	// UBRRH = 0; // Unneccessary; removed to save space.
 	UBRRL = 25;
 	UCSRA = (0<<U2X);
 	// UCSRB- RXEN and TXEN enable the transmit and receive circuitry.
@@ -178,7 +177,7 @@ int main(void)
 		// The main functionality is to go to sleep when there's been no activity
 		//   for some time; if Timer1 manages to overflow, it will set sleepyTime
 		//   true.
-		if (sleepyTime)
+		if (sleepyTime == TRUE)
 		{
 			serialWrite("z");			// Let the user know sleep mode is coming.
 			ADXLConfig();
