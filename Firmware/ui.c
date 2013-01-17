@@ -309,10 +309,10 @@ void serialParse(void)
 //   would be simpler (and tidier) to put it inline.
 void printMenu(void)
 {
-	serialWrite("Ready!");
+	serialWrite(":-)");
 }
 
 void abortInput(void)
 {
-	serialWrite("Bad input!");
+	serialWrite(":-(");
 }

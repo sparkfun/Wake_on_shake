@@ -1,4 +1,4 @@
-﻿/******************************************************************************
+/******************************************************************************
 Created 26 Nov 2012 by Mike Hord at SparkFun Electronics.
 Wake-on-Shake hardware and firmware are released under the Creative Commons 
 Share Alike v3.0 license:
@@ -20,7 +20,7 @@ we're free to be kind of lax with our response times.
 #include "eeprom.h"
 
 extern uint16_t				t1Offset;		// See Wake-on-Shake.cpp
-extern volatile bool		sleepyTime;		// See Wake-on-Shake.cpp
+extern volatile uint8_t		sleepyTime;		// See Wake-on-Shake.cpp
 extern volatile uint8_t     serialRxData;	// See Wake-on-Shake.cpp
 
 // Timer1 overflow ISR- this is the means by which the device goes to sleep
@@ -30,7 +30,7 @@ extern volatile uint8_t     serialRxData;	// See Wake-on-Shake.cpp
 //   more than a minute. To shorten that time, we prime TCNT1
 ISR(TIMER1_OVF_vect)
 {
-	sleepyTime = true;
+	sleepyTime = TRUE;
 }
 
 // INT0 ISR- This is one way the processor can wake from sleep. INT0 is tied
@@ -40,7 +40,7 @@ ISR(TIMER1_OVF_vect)
 ISR(INT0_vect)
 {
 	TCNT1 = t1Offset;				// Reset our counter for on-time.
-	sleepyTime = false;				// Indicate wakefulness to main loop.
+	sleepyTime = FALSE;				// Indicate wakefulness to main loop.
 	GIMSK = (0<<INT0)|(0<<INT1);	// Disable INT pins while we're awake.
 									//  This is important b/c the INT pins
 									//  cause an interrupt on LOW rather
@@ -55,7 +55,7 @@ ISR(INT0_vect)
 ISR(INT1_vect)
 {
 	TCNT1 = t1Offset;				// See INT0 ISR for details.
-	sleepyTime = false;
+	sleepyTime = FALSE;
 	GIMSK = (0<<INT0)|(0<<INT1); 
 }
 

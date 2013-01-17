@@ -1,4 +1,4 @@
-﻿/******************************************************************************
+/******************************************************************************
 Created 26 Nov 2012 by Mike Hord at SparkFun Electronics.
 Wake-on-Shake hardware and firmware are released under the Creative Commons 
 Share Alike v3.0 license:
@@ -11,6 +11,7 @@ Function implementation for serial write handling.
 ******************************************************************************/
 
 #include <avr/io.h>
+#include <stdio.h>
 #include "serial.h"
 
 // Print a single character out to the serial port. Blocks until write has
@@ -25,21 +26,20 @@ void serialWriteChar(char data)
 // serialWrite() takes a pointer to a string and iterates over that string
 //   until it finds the C end-of-string character ('\0'). It's a blocking
 //   operation and does not return until the print operation is completed.
-void serialWrite(const char* data)
+void serialWrite(char* data)
 {
 	do
 	{
 		serialWriteChar((char)*data);   // Print the first character.
 		data++;							// Increment the pointer.
 	} while (*data != '\0');			// Check for the end of the string.
-	serialWriteChar((char)'\n');		// Print a newline/line feed.
-	serialWriteChar((char)'\r');		// Print a carriage return.
+	serialNewline();
 }
 
 // Convert a 16-bit unsigned value into ASCII characters and dump it out
 //   to the serial port.
 void serialWriteInt(unsigned int data)
-{
+{	
 	uint8_t tenth = 0;
 	uint8_t thou = 0;
 	uint8_t huns = 0;
@@ -67,6 +67,11 @@ void serialWriteInt(unsigned int data)
 	serialWriteChar(huns);
 	serialWriteChar(tens);
 	serialWriteChar(ones);
+	serialNewline();
+}
+
+void serialNewline(void)
+{
 	serialWriteChar((char)'\n');
 	serialWriteChar((char)'\r');
 }

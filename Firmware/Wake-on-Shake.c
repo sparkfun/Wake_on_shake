@@ -16,8 +16,8 @@ shutdown and wake-up sensitivity. There are other, more powerful features
 available, but most users will not need them.
 
 ******************************************************************************/
-
-//avrdude -p t2313 -P usb -c avrispmkii -U flash:w:Wake-on-Shake.hex -U hfuse:w:0xdf:m -U lfuse:w:0x64:m
+// avrdude programming string
+//avrdude -p t2313 -B 10 -P usb -c avrispmkii -U flash:w:Wake-on-Shake.hex -U hfuse:w:0xdf:m -U lfuse:w:0x64:m
 
 #include <avr/io.h>
 #include <avr/sleep.h>
@@ -34,7 +34,7 @@ available, but most users will not need them.
 uint16_t			t1Offset;			// This value, when written to TCNT1, 
 										//   is the offset to the delay before
 										//   sleep. It is 65535 - (delay)ms.
-volatile bool		sleepyTime = false; // Flag used to communicate from the
+volatile uint8_t	sleepyTime = FALSE; // Flag used to communicate from the
 										//   ISR to the main program to send
 										//   the device into sleep mode.
 volatile uint8_t    serialRxData = 0;	// Data passing variable to get data
@@ -178,7 +178,7 @@ int main(void)
 		// The main functionality is to go to sleep when there's been no activity
 		//   for some time; if Timer1 manages to overflow, it will set sleepyTime
 		//   true.
-		if (sleepyTime)
+		if (sleepyTime == TRUE)
 		{
 			serialWrite("z");			// Let the user know sleep mode is coming.
 			ADXLConfig();

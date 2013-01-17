@@ -30,4 +30,7 @@ void EEPROMConfig(void);	// Set the EEPROM storage locations up if they
 #define loadOff() PORTD &= !(1<<PD4)
 #define loadOn()  PORTD |= (1<<PD4)
 
+#define TRUE 1
+#define FALSE 0
+
 #endif

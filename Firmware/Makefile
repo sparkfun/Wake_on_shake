@@ -60,13 +60,13 @@ TARGET = wake-on-shake
 
 
 # List C source files here. (C dependencies are automatically generated.)
-SRC = 	wake-on-shake.cpp
-SRC +=  ui.cpp
-SRC +=  serial.cpp
-SRC +=  interrupts.cpp
-SRC +=  ADXL362.cpp
-SRC +=  eeprom.cpp
-SRC +=  spi.cpp
+SRC = 	wake-on-shake.c
+SRC +=  ui.c
+SRC +=  serial.c
+SRC +=  interrupts.c
+SRC +=  ADXL362.c
+SRC +=  eeprom.c
+SRC +=  spi.c
 		
 
 
@@ -274,7 +274,7 @@ DEBUG_HOST = localhost
 # Define programs and commands.
 #TOOL_PATH = C:/Program Files (x86)/Atmel/Atmel Studio 6.0/extensions/Atmel/AVRGCC/3.4.0.65/AVRToolchain/bin/
 SHELL = sh
-CC = avr-c++
+CC = avr-gcc
 OBJCOPY = avr-objcopy
 OBJDUMP = avr-objdump
 SIZE = avr-size
@@ -350,7 +350,7 @@ end:
 
 
 # Display size of file.
-HEXSIZE = $(SIZE) --target=$(FORMAT) $(TARGET).hex
+HEXSIZE = $(SIZE) --target=$(FORMAT) --format=Berkeley $(TARGET).hex
 ELFSIZE = $(SIZE) -A $(TARGET).elf
 AVRMEM = avr-mem.sh $(TARGET).elf $(MCU)
 

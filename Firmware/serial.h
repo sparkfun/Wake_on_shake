@@ -14,11 +14,12 @@ Function definitions for the ADXL362.
 #define _serial_h_included
 
 void serialWriteChar(char);			// Single character write.
-void serialWrite(const char*);		// String constant write. Terminates with a
+void serialWrite(char*);			// String constant write. Terminates with a
 									//  a CR and an LF for terminal happiness.
 									//  Blocking.
 void serialWriteInt(unsigned int);  // Convert a 16-bit unsigned value into
 									//  ASCII characters and send it out.
 									//  Terminates with CR and LF. Blocking.
+void serialNewline(void);
 									
 #endif
