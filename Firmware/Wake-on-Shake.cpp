@@ -1,9 +1,23 @@
-/*
- * Wake_on_Shake.cpp
- *
- * Created: 11/13/2012 2:30:23 PM
- *  Author: mike.hord
- */ 
+/******************************************************************************
+Created 26 Nov 2012 by Mike Hord at SparkFun Electronics.
+Wake-on-Shake hardware and firmware are released under the Creative Commons 
+Share Alike v3.0 license:
+	http://creativecommons.org/licenses/by-sa/3.0/
+Feel free to use, distribute, and sell variants of Wake-on-Shake. All we ask 
+is that you include attribution of 'Based on Wake-on-Shake by SparkFun'.
+
+Wake-on-Shake is a simple but powerful board designed to power up a larger
+circuit when it detects motion. The load has the option of holding its power
+even after the Wake-on-Shake releases it, so the load circuit can complete its
+"mission".
+
+It also provides a very simple UI which can be used to set the time before
+shutdown and wake-up sensitivity. There are other, more powerful features
+available, but most users will not need them.
+
+******************************************************************************/
+
+//avrdude -p t2313 -P usb -c avrispmkii -U flash:w:Wake-on-Shake.hex -U hfuse:w:0xdf:m -U lfuse:w:0x64:m
 
 #include <avr/io.h>
 #include <avr/sleep.h>
@@ -15,13 +29,19 @@
 #include "spi.h"
 #include "ADXL362.h"
 #include "xl362.h"
+#include "ui.h"
 
-
-
-uint16_t			t1Offset;
-uint16_t			threshold;
-volatile bool		sleepyTime = false;
-volatile uint8_t    serialRxData = 0;
+uint16_t			t1Offset;			// This value, when written to TCNT1, 
+										//   is the offset to the delay before
+										//   sleep. It is 65535 - (delay)ms.
+volatile bool		sleepyTime = false; // Flag used to communicate from the
+										//   ISR to the main program to send
+										//   the device into sleep mode.
+volatile uint8_t    serialRxData = 0;	// Data passing variable to get data
+										//   from the receive ISR back to main.
+										
+// main(). If you don't know what this is, you need to do some serious
+//  work on your fundamentals.
 
 int main(void)
 {
@@ -152,7 +172,7 @@ int main(void)
 	// Okay, now we can move forward with our main application code. This loop
 	//   will just run over and over forever, waiting for signals from interrupts
 	//   to tell it what to do.
-	serialWrite("Ready!");
+	printMenu();
 	while(1)
 	{
 		// The main functionality is to go to sleep when there's been no activity
@@ -167,6 +187,7 @@ int main(void)
 										//   data, INT1 is accelerometer interrupt
 			loadOff();					// Turn off the load for sleepy time.
 			sleep_mode();				// Go to sleep until awoken by an interrupt.
+			printMenu();
 			EEPROMRetrieve();			// Retrieve EEPROM values, mostly to print
 										//   them out to the user, if the wake-up
 										//   was due to serial data arriving.
@@ -183,7 +204,7 @@ int main(void)
 //   puts them into SRAM, and prints them over the serial line.
 void EEPROMRetrieve(void)
 {
-	threshold = EEPROMReadWord((uint8_t)THRESH);		// Activity threshold. See
+	uint16_t threshold = EEPROMReadWord((uint8_t)ATHRESH);		// Activity threshold. See
 														//   ADXL362 datasheet for info.
 	t1Offset =  EEPROMReadWord((uint8_t)WAKE_OFFS);     // (65535 - t1Offset)ms elapse
 														//   between Timer1 interrupts.
@@ -198,103 +219,12 @@ void EEPROMRetrieve(void)
 //   high for practicality.
 void EEPROMConfig(void)
 {
-	threshold = 150;		// Corresponds to ~150mg activity threshold
-	t1Offset  = 60000;		// Corresponds to ~10s delay before going to sleep
+	t1Offset  = 60535;		// Corresponds to ~5s delay before going to sleep
 	// Now let's store these, along with the "key" that let's us know we've done this.
-	EEPROMWriteWord((uint8_t)THRESH, (uint16_t)threshold);
+	EEPROMWriteWord((uint8_t)ATHRESH, (uint16_t) 150);
 	EEPROMWriteWord((uint8_t)WAKE_OFFS, (uint16_t)t1Offset);
+	EEPROMWriteWord((uint8_t)ITHRESH, (uint16_t)50);
+	EEPROMWriteWord((uint8_t)ITIME, (uint16_t)15);
+	EEPROMWriteByte((uint8_t)KEY_ADDR, (uint8_t)KEY);
 }
 
-// Probably the most complex part of the code, serialParse() is a state machine
-//   which provides a limited user interface for setting and getting the parameters
-//   which dictate the operation of the Wake-on-shake. It gets called by the main
-//   code whenever a serial interrupt receives a non-null value over the serial
-//   port. It echoes back the received data (primarily for user convenience), then
-//   handles the data depending on current state and received data.
-void serialParse(void)
-{
-	// Static variables- these need to persist between calls to this function.
-	static uint16_t		inputBufferValue = 0;
-	static uint8_t		mode = ' ';
-	static uint8_t		ADXL362DataBuffer = 0;  // Make a variable which will
-										//   be used to store the data the user
-										//   wants to write to the ADXL362 between
-										//   calls of this function.
-	uint8_t				localData = serialRxData;   // Make a local copy so we don't miss any
-										//   interrupts on the serial port, or end
-										//   up with data that gets changed halfway
-										//   through this function.
-	serialRxData = 0;					// Clear serialRxData
-	serialWriteChar(localData);			// Echo received data.
-	
-	// The state machine is implemented as an if/else group.
-	// First case: carriage returns/newlines when we're in the "no data" state.
-	//   Basically, we can just ignore these. This is important, because we don't
-	//   know for sure what the serial program the user is entering data from will
-	//   send at the end of the line, so we need to respond to either if they
-	//   happen at the end of data entry, and ignore them any other time, since
-	//   some programs may send BOTH CR and LF.
-	if (((localData == '\n') | (localData == '\r')) & (mode == ' '));
-	// CR/LF when we're in data reading mode: respond to whichever one happens first
-	//   by parsing the received data.
-	else if (((localData == '\n') | (localData == '\r')) & (mode != ' '))
-	{
-		// Now, make a decision about what to do with the data depending on the mode.
-		switch(mode)
-		{
-			// 't' indicates that user wanted to change the threshold setting, so
-			//   let's store the inputBufferValue in EEPROM. 
-			case 't':
-			EEPROMWriteWord((uint8_t)THRESH, inputBufferValue);
-			threshold = inputBufferValue;
-			break;
-			// 'd' indicates that user wanted to change the delay before sleep, so
-			//   so we need to convert the user's value in milliseconds to an offset
-			//   value that can be loaded into TCNT1. We'll also include a check so
-			//   the user can't accidentally set the timeout period so short as to
-			//   render the device difficult to program.
-			case 'd':
-			t1Offset = 65535 - inputBufferValue;
-			if (t1Offset > 63000) t1Offset = 63000;
-			EEPROMWriteWord((uint8_t)WAKE_OFFS, t1Offset);
-			break;
-			// 'b' indicates that the user wishes to buffer a value to be written
-			//   to the ADXL362. It is up to the user to ensure that the value is
-			//   in the appropriate range (0-255).
-			case 'b':
-			ADXL362DataBuffer = (uint8_t)inputBufferValue;
-			break;			
-			// 'w' indicates that the user wants to write a value directly to the
-			//   ADXL362 part. In this case, inputBufferValue is taken as an
-			//   address to write to, and the data to be written is in the 
-			//   ADXL362DataBuffer variable.
-			case 'w':
-			ADXLWriteByte((uint8_t)inputBufferValue, ADXL362DataBuffer);
-			break;
-			case 'r':
-			serialWriteInt((uint16_t)ADXLReadByte((uint8_t)inputBufferValue));
-			break;
-		}
-		inputBufferValue = 0;		// Clear the input buffer for next data stream.
-		mode = ' ';					// Reset the mode for next data stream.
-	}
-	// If the mode is currently null, and the character entered is a valid mode,
-	//   let's activate that mode.
-	else if ((mode == ' ')&((localData == 't')|(localData == 'd')|(localData == 'b')|(localData == 'w')|(localData == 'r')))
-	{
-		mode = localData;
-	}
-	// If we're in a valid mode, AND the character in question is numeric, adjust
-	//   the inputbuffer value accordingly.
-	else if ((mode == 't')|(mode == 'd')|(mode == 'w')|(mode == 'r')|(mode == 'b'))
-	{
-		// Numeric ASCII values are between 48 ('0') and 57 ('9'). We can easily
-		//   convert from an ASCII character to a binary value by subtracting 48.
-		if ((47<localData) & (localData<58))
-		{
-			inputBufferValue *= 10;
-			inputBufferValue += (localData - 48);
-		}
-	}
-	else mode = ' ';    // Otherwise, just ignore what's happening and go back to null mode.
-}
