@@ -58,7 +58,9 @@ void serialParse(void)
 	uint8_t				localData = serialRxData;
 	
 	serialRxData = 0;					// Clear serialRxData
-	serialWriteChar(localData);			// Echo received data.
+	//serialWriteChar(localData);		// Echo received data. Removed from
+										//  released version b/c there's no
+										//  real need to do this.
 	
 // The state machine is implemented as an if/else group.
 	
