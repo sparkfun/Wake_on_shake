@@ -187,25 +187,25 @@ void serialParse(void)
 			switch(localData)
 			{
 				case '0':
-				DDRB &= !(1<<PB0);							// make pin input
-				serialWriteChar((PINB & (1<<PB0))>>PB0);    // isolate bit and
+				DDRB &= ~(1<<PB0);							// make pin input
+				serialWriteChar('0'+((PINB & (1<<PB0))>>PB0));    // isolate bit and
 														    //   read it out
 				break;
 				case '1':
-				DDRB &= !(1<<PB1);
-				serialWriteChar((PINB & (1<<PB1))>>PB1);
+				DDRB &= ~(1<<PB1);
+				serialWriteChar('0'+((PINB & (1<<PB1))>>PB1));
 				break;
 				case '2':
-				DDRB &= !(1<<PB2);
-				serialWriteChar((PINB & (1<<PB2))>>PB2);
+				DDRB &= ~(1<<PB2);
+				serialWriteChar('0'+((PINB & (1<<PB2))>>PB2));
 				break;
 				case '3':
-				DDRB &= !(1<<PB3);
-				serialWriteChar((PINB & (1<<PB3))>>PB3);
+				DDRB &= ~(1<<PB3);
+				serialWriteChar('0'+((PINB & (1<<PB3))>>PB3));
 				break;
 				case '6':
-				DDRD &= !(1<<PD6);
-				serialWriteChar((PIND & (1<<PD6))>>PD6);
+				DDRD &= ~(1<<PD6);
+				serialWriteChar('0'+((PIND & (1<<PD6))>>PD6));
 				break;
 				default:
 				abortInput();
@@ -257,23 +257,23 @@ void serialParse(void)
 			{
 				case '0':
 				DDRB |= (1<<PB0);	// make pin an output
-				PORTB &= !(1<<PB0); // set pin low
+				PORTB &= ~(1<<PB0); // set pin low
 				break;
 				case '1':
 				DDRB |= (1<<PB1);
-				PORTB &= !(1<<PB1);
+				PORTB &= ~(1<<PB1);
 				break;
 				case '2':
 				DDRB |= (1<<PB2);
-				PORTB &= !(1<<PB2);
+				PORTB &= ~(1<<PB2);
 				break;
 				case '3':
 				DDRB |= (1<<PB3);
-				PORTB &= !(1<<PB3);
+				PORTB &= ~(1<<PB3);
 				break;
 				case '6':
 				DDRD |= (1<<PD6);
-				PORTD &= !(1<<PD6);
+				PORTD &= ~(1<<PD6);
 				break;
 				default:
 				abortInput();
