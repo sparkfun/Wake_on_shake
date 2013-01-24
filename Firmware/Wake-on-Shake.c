@@ -107,12 +107,12 @@ int main(void)
 	//   during normal operation- only during user configuration. We'll
 	//   set the mode to 2400 baud, 8-N-1. Pretty standard, really.
 
-	// For 2400 baud, at 1.000MHz (which is our clock speed, since we're
+	// For 9600 baud, at 1.000MHz (which is our clock speed, since we're
 	//   using the internal oscillator clocked down), UBRR should be set to
-	//   25, and the U2X bit of UCSRA should be set to '0'.
+	//   12, and the U2X bit of UCSRA should be set to '1'.
 	UBRRH = 0;
-	UBRRL = 25;
-	UCSRA = (0<<U2X);
+	UBRRL = 12;
+	UCSRA = (1<<U2X);
 	// UCSRB- RXEN and TXEN enable the transmit and receive circuitry.
 	//   UCSZ2 is a frame size bit; when set to 0 (as here), the size is
 	//   determined by UCSZ1:0 in UCSRC. RXCIE is the receive interrupt
@@ -187,10 +187,10 @@ int main(void)
 										//   data, INT1 is accelerometer interrupt
 			loadOff();					// Turn off the load for sleepy time.
 			sleep_mode();				// Go to sleep until awoken by an interrupt.
-			printMenu();
 			EEPROMRetrieve();			// Retrieve EEPROM values, mostly to print
 										//   them out to the user, if the wake-up
 										//   was due to serial data arriving.
+			printMenu();
 			loadOn();					// Turn the load back on.
 		}
 		// Any data arriving over the serial port will trigger a serial receive

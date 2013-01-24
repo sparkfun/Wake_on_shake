@@ -20,7 +20,7 @@ uint8_t ADXLReadByte(uint8_t);				// Does all the work to read a byte
 void    ADXLWriteByte(uint8_t, uint8_t);	// Does all the work to write a byte
 											//   to one of the ADXL362's
 											//   internal registers.
-void    ADXLConfig();						// Set up all the necessary values
+void    ADXLConfig(void);					// Set up all the necessary values
 											//   to put the ADXL362 into the
 											//   mode we need for this product,
 											//   including user set variables.
