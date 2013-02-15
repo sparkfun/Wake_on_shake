@@ -6,6 +6,8 @@ Share Alike v3.0 license:
 Feel free to use, distribute, and sell variants of Wake-on-Shake. All we ask 
 is that you include attribution of 'Based on Wake-on-Shake by SparkFun'.
 
+Original wake-on-shake concept by Nitzan Gadish, Analog Devices
+
 Wake-on-Shake is a simple but powerful board designed to power up a larger
 circuit when it detects motion. The load has the option of holding its power
 even after the Wake-on-Shake releases it, so the load circuit can complete its

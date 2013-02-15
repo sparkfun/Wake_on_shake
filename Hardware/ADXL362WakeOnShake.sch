@@ -8223,8 +8223,10 @@ Iq less than 1uA for low Iload</description>
 <sheets>
 <sheet>
 <plain>
-<text x="167.64" y="7.62" size="5.08" layer="94">Mike Hord</text>
+<text x="173.482" y="7.62" size="5.08" layer="94">Mike Hord</text>
 <text x="238.252" y="5.842" size="5.08" layer="94">10</text>
+<text x="2.54" y="2.54" size="1.778" layer="94">Original wake-on-shake concept by
+Nitzan Gadish, Analog Devices</text>
 </plain>
 <instances>
 <instance part="Q1" gate="NMOS" x="86.36" y="63.5"/>
@@ -8670,4 +8672,10 @@ Iq less than 1uA for low Iload</description>
 </sheets>
 </schematic>
 </drawing>
+<compatibility>
+<note version="6.3" minversion="6.2.2" severity="warning">
+Since Version 6.2.2 text objects can contain more than one line,
+which will not be processed correctly with this version.
+</note>
+</compatibility>
 </eagle>
