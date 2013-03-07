@@ -11,5 +11,8 @@ Hardware was developed in EAGLE 6.3.0.
 
 License Information
 -------------------
+The hardware design is released under [CC-SA v3 license](http://creativecommons.org/licenses/by-sa/3.0/us/).
 
-???
+The firmware is released under a modified beerware license, allowing for the purchase of any libation, alcoholic or non.
+
+
