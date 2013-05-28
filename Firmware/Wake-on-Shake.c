@@ -107,7 +107,7 @@ int main(void)
 	
 	// Set up the USART peripheral for writing in and out. This isn't used
 	//   during normal operation- only during user configuration. We'll
-	//   set the mode to 2400 baud, 8-N-1. Pretty standard, really.
+	//   set the mode to 9600 baud, 8-N-1. Pretty standard, really.
 
 	// For 9600 baud, at 1.000MHz (which is our clock speed, since we're
 	//   using the internal oscillator clocked down), UBRR should be set to
