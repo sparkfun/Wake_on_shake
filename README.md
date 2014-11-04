@@ -9,10 +9,17 @@ The Wake-on-Shake, based on a concept by Nitzan Gadish of Analog Devices, combin
 Firmware was compiled in WinAVR-20100110.  
 Hardware was developed in EAGLE 6.3.0.
 
+Repository Contents
+-------------------
+
+* **/Firmware** - Any firmware that the part ships with, 
+* **/Hardware** - All Eagle design files (.brd, .sch, .STL)
+* **/Production Files** - Test bed files and production panel files
+* **/User_Guide_Images** - User guide images for .pdf hookup guide. 
+
 License Information
 -------------------
-The hardware design is released under [CC-SA v3 license](http://creativecommons.org/licenses/by-sa/3.0/us/).
+The hardware is released under [Creative Commons ShareAlike 4.0 International](https://creativecommons.org/licenses/by-sa/4.0/).
+The code is beerware; if you see me (or any other SparkFun employee) at the local, and you've found our code helpful, please buy us a round!
 
-The firmware is released under a modified beerware license, allowing for the purchase of any libation, alcoholic or non.
-
-
+Distributed as-is; no warranty is given.
