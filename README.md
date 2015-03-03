@@ -16,7 +16,7 @@ Repository Contents
 
 * **/Firmware** - Any firmware that the part ships with, 
 * **/Hardware** - All Eagle design files (.brd, .sch, .STL)
-* **/Production Files** - Test bed files and production panel files
+* **/Production** - Test bed files and production panel files
 
 License Information
 -------------------
