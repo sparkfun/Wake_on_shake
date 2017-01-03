@@ -60,7 +60,7 @@ TARGET = wake-on-shake
 
 
 # List C source files here. (C dependencies are automatically generated.)
-SRC = 	wake-on-shake.c
+SRC = 	Wake-on-Shake.c
 SRC +=  ui.c
 SRC +=  serial.c
 SRC +=  interrupts.c
