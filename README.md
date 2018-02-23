@@ -18,6 +18,11 @@ Repository Contents
 * **/Hardware** - All Eagle design files (.brd, .sch, .STL)
 * **/Production** - Test bed files and production panel files
 
+Documentation
+--------------
+* **[Hookup Guide](https://learn.sparkfun.com/tutorials/wake-on-shake-hookup-guide)** - Basic hookup guide for the Wake-on-Shake.
+* **[Project Tutorial](https://learn.sparkfun.com/tutorials/the-uncertain-7-cube)** - Project tutorial for the Wake-on-Shake.
+  
 License Information
 -------------------
 The hardware is released under [Creative Commons ShareAlike 4.0 International](https://creativecommons.org/licenses/by-sa/4.0/).
